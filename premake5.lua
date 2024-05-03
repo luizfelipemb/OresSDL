@@ -11,7 +11,7 @@ project "OresSDL"
     targetdir "bin/%{cfg.system}-%{cfg.buildcfg}/%{cfg.architecture}"
     objdir "bin-int/%{cfg.system}-%{cfg.buildcfg}/%{cfg.architecture}"
 
-    files { "src/**.cpp", "include/**.h", }
+    files { "src/**.cpp", "src/**.h", }
 
     filter "configurations:Debug"
         defines { "DEBUG" }
