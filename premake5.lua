@@ -30,12 +30,21 @@ project "OresSDL"
     filter "system:windows"
         system "Windows"
 
-        includedirs { "SDL2-2.30.3/include" }
-        libdirs { "SDL2-2.30.3/lib/x64" }
+        includedirs 
+		{ 
+		"vendor/SDL2-2.30.3/include",
+		"vendor/SDL2_image-2.8.2/include"
+		}
+        libdirs 
+		{ 
+		"vendor/SDL2-2.30.3/lib/x64",
+		"vendor/SDL2_image-2.8.2/lib/x64"
+		}
 
-        links { "SDL2main", "SDL2" }
+        links { "SDL2main", "SDL2","SDL2_image" }
 		
  -- Post-build action to copy SDL2.dll
         postbuildcommands {
-            "{COPY} %{path.getabsolute('SDL2-2.30.3/lib/x64/SDL2.dll')} %{cfg.targetdir}"
+            "{COPY} %{path.getabsolute('vendor/SDL2-2.30.3/lib/x64/SDL2.dll')} %{cfg.targetdir}",
+			"{COPY} %{path.getabsolute('vendor/SDL2_image-2.8.2/lib/x64/SDL2_image.dll')} %{cfg.targetdir}"
         }

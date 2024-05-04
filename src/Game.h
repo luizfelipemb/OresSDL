@@ -1,11 +1,15 @@
 #pragma once
+#include "Render.h"
+#include <memory>
+
 class Game
 {
 public:
-	void Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
+	Game();
 	void Update();
 	bool Running = true;
 private:
 	int last_frame_time;
+	std::unique_ptr<Render> render;
 };
 
