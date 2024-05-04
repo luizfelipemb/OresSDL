@@ -1,10 +1,10 @@
-#include "Render.h"
+#include "SDLRenderWrapper.h"
 #include <SDL.h>
 #include <SDL_image.h>
 #include "Configs.h"
 #include <string>
 
-Render::Render()
+SDLRenderWrapper::SDLRenderWrapper()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 
@@ -26,14 +26,12 @@ Render::Render()
 	SDL_RenderClear(renderer);
 }
 
-void Render::UpdateRender()
+void SDLRenderWrapper::UpdateRender()
 {
-	Load("assets/background.jpg");
-	Draw("assets/background.jpg",0,0,WINDOW_WIDTH, WINDOW_HEIGHT,1,0);
 	SDL_RenderPresent(renderer);
 }
 
-bool Render::Load(std::string fileName)
+bool SDLRenderWrapper::LoadTexture(std::string fileName)
 {
 	if (textureMap.find(fileName) != textureMap.end())
 		return false;
@@ -62,27 +60,30 @@ bool Render::Load(std::string fileName)
 	return false;
 }
 
-void Render::Draw(std::string filename, int x, int y, int w, int h, double scale, double r, SDL_RendererFlip flip)
+void SDLRenderWrapper::Draw(std::string filename, int x, int y, int w, int h, double scale)
 {
 	SDL_Rect destRect;
-
 	destRect.x = x;
 	destRect.y = y;
 	destRect.w = w;
 	destRect.h = h;
 	destRect.w *= scale;
 	destRect.h *= scale;
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
+
+	if (textureMap.find(filename) == textureMap.end())
+		LoadTexture(filename);
 
 	if(SDL_RenderCopyEx(renderer, textureMap[filename], NULL, &destRect, 0, NULL, flip) != 0)
 		std::cout << SDL_GetError() << std::endl;
 }
 
-void Render::ClearFromTextureMap(std::string filename)
+void SDLRenderWrapper::ClearFromTextureMap(std::string filename)
 {
 	textureMap.erase(filename);
 }
 
-void Render::ClearAllTextures()
+void SDLRenderWrapper::ClearAllTextures()
 {
 	textureMap.clear();
 }

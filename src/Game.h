@@ -1,5 +1,5 @@
 #pragma once
-#include "Render.h"
+#include "GameRenderer.h"
 #include <memory>
 
 class Game
@@ -10,6 +10,6 @@ public:
 	bool Running = true;
 private:
 	int last_frame_time;
-	std::unique_ptr<Render> render;
+	std::unique_ptr<GameRenderer> render;
 };
 

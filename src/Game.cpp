@@ -5,7 +5,7 @@
 
 Game::Game()
 {
-	render = std::make_unique<Render>();
+	render = std::make_unique<GameRenderer>();
 }
 
 void Game::Update()
