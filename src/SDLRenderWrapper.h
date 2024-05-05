@@ -7,7 +7,7 @@
 class SDLRenderWrapper : public RenderWrapperBase
 {
 public:
-	SDLRenderWrapper();
+	SDLRenderWrapper(const char* windowTitle, int windowWidth, int windowHeight, bool fullscreen = false);
 	void UpdateRender() override;
 	bool LoadTexture(std::string fileName) override;
 	void Draw(std::string filename, int x, int y, int w, int h, double scale) override;

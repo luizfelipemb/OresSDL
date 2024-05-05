@@ -1,24 +1,23 @@
 #include "SDLRenderWrapper.h"
 #include <SDL.h>
 #include <SDL_image.h>
-#include "Configs.h"
 #include <string>
 
-SDLRenderWrapper::SDLRenderWrapper()
+SDLRenderWrapper::SDLRenderWrapper(const char* windowTitle, int windowWidth, int windowHeight, bool fullscreen)
 {
 	SDL_Init(SDL_INIT_VIDEO);
 
 	int flags = 0;
-	if (WINDOW_FULLSCREEN)
+	if (fullscreen)
 	{
 		flags = SDL_WINDOW_FULLSCREEN;
 	}
 	window = SDL_CreateWindow(
-		WINDOW_TITLE,
+		windowTitle,
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		WINDOW_WIDTH,
-		WINDOW_HEIGHT,
+		windowWidth,
+		windowHeight,
 		flags
 	);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);

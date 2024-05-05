@@ -5,7 +5,8 @@
 
 Game::Game()
 {
-	render = std::make_unique<GameRenderer>();
+	boardLogic = std::make_shared<BoardLogic>();
+	render = std::make_unique<GameRenderer>(boardLogic);
 }
 
 void Game::Update()
@@ -13,6 +14,7 @@ void Game::Update()
 	while (!SDL_TICKS_PASSED(SDL_GetTicks(), last_frame_time + FRAME_TARGET_TIME));
 	last_frame_time = SDL_GetTicks();
 
+	boardLogic->Update();
 	render->UpdateRender();
 
 	SDL_Event windowEvent;
