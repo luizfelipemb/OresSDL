@@ -7,8 +7,8 @@ class BoardLogic
 public:
 	BoardLogic();
 	void Update();
-	const std::vector<BlockTile>& GetTiles() const { return tiles; };
+	const std::vector<std::vector<BlockTile>>& GetTiles() const { return tiles; };
 private:
-	std::vector<BlockTile> tiles;
+	std::vector<std::vector<BlockTile>> tiles;
 };
 

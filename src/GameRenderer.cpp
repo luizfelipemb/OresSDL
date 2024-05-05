@@ -12,8 +12,10 @@ void GameRenderer::UpdateRender()
 {
 	render->Draw(BACKGROUND_IMAGE, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 1);
 
-	for (auto tile : boardLogic->GetTiles()) {
-		render->Draw(TILE_IMAGE, tile.GetX() , tile.GetY(), TILE_SIDE, TILE_SIDE, 1);
+	for (auto& tile : boardLogic->GetTiles()) {
+		for (auto& tile2 : tile) {
+			render->Draw(TILE_IMAGE, tile2.GetX(), tile2.GetY(), TILE_SIDE, TILE_SIDE, 1);
+		}
 	}
 
 	render->UpdateRender();
