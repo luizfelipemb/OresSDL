@@ -2,11 +2,16 @@
 #include "Configs.h"
 #include "SDL.h"
 #include <iostream>
+#include "SDLRenderWrapper.h"
 
 Game::Game()
 {
-	boardLogic = std::make_shared<BoardLogic>();
-	render = std::make_unique<GameRenderer>(boardLogic);
+	last_frame_time = 0;
+	render = std::make_shared<SDLRenderWrapper>(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_FULLSCREEN);
+	inputHandle = std::make_shared<InputHandler>();
+
+	inGameState = std::make_shared<InGameState>(render);
+	currentState = inGameState;
 }
 
 void Game::Update()
@@ -14,7 +19,8 @@ void Game::Update()
 	while (!SDL_TICKS_PASSED(SDL_GetTicks(), last_frame_time + FRAME_TARGET_TIME));
 	last_frame_time = SDL_GetTicks();
 
-	boardLogic->Update();
+	inputHandle->HandleEvents();
+	currentState->Update();
 	render->UpdateRender();
 
 	SDL_Event windowEvent;
@@ -25,4 +31,11 @@ void Game::Update()
 			Running = false;
 		}
 	}
+}
+
+void Game::SwitchState(std::shared_ptr<GameStateBase> newState)
+{
+	currentState->OnExit();
+	currentState = newState;
+	currentState->OnEnter();
 }

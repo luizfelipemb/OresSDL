@@ -6,9 +6,9 @@
 class GameRenderer
 {
 public:
-	GameRenderer(std::shared_ptr<BoardLogic> boardLogic);
+	GameRenderer(std::shared_ptr<BoardLogic> boardLogic, std::shared_ptr<RenderWrapperBase> render);
 	void UpdateRender();
-	std::unique_ptr<RenderWrapperBase> render;
+	std::shared_ptr<RenderWrapperBase> render;
 private:
 	std::shared_ptr<BoardLogic> boardLogic;
 };
