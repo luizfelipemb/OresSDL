@@ -11,7 +11,7 @@ Game::Game()
 	inputHandle = std::make_shared<InputHandler>();
 
 	inGameState = std::make_shared<InGameState>(render);
-	currentState = inGameState;
+	SwitchState(inGameState);
 }
 
 void Game::Update()
@@ -35,7 +35,9 @@ void Game::Update()
 
 void Game::SwitchState(std::shared_ptr<GameStateBase> newState)
 {
-	currentState->OnExit();
+	if(currentState)
+		currentState->OnExit();
+	inputHandle->RegisterObserver(newState);
 	currentState = newState;
 	currentState->OnEnter();
 }

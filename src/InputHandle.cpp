@@ -1,6 +1,5 @@
 #include "InputHandle.h"
 #include <SDL_events.h>
-#include <iostream>
 
 void InputHandler::HandleEvents()
 {
@@ -15,6 +14,10 @@ void InputHandler::HandleEvents()
 			int mouseX = event.button.x;
 			int mouseY = event.button.y;
 			std::cout << "Mouse Button Down with x:"<<mouseX << " y:" << mouseY << std::endl;
+
+			for (std::shared_ptr<InputObserver> observer : observers) {
+				observer->OnMouseLeftClick(mouseX, mouseY);
+			}
 		}
 		break;
 	case SDL_MOUSEBUTTONUP:

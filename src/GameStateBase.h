@@ -1,5 +1,7 @@
 #pragma once
-class GameStateBase
+#include "InputObserver.h"
+
+class GameStateBase : public InputObserver
 {
 public:
 	virtual void OnEnter() = 0;

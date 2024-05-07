@@ -11,8 +11,9 @@ public:
 	void OnEnter() override;
 	void Update() override;
 	void OnExit() override;
+	void OnMouseLeftClick(int PosX, int PosY) override;
 private:
 	std::shared_ptr<BoardLogic> boardLogic;
-	std::shared_ptr<GameRenderer> gameRenderer;
+	std::shared_ptr<InGameRenderer> gameRenderer;
 };
 

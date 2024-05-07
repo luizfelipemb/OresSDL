@@ -10,7 +10,11 @@
 
 // Image Settings
 #define BACKGROUND_IMAGE "assets/background.jpg"
-#define TILE_IMAGE "assets/tile.png"
+#define TILE_GREY_IMAGE "assets/TileGrey.png"
+#define TILE_YELLOW_IMAGE "assets/TileYellow.png"
+#define TILE_BLUE_IMAGE "assets/TileBlue.png"
+#define TILE_GREEN_IMAGE "assets/TileGreen.png"
+#define TILE_RED_IMAGE "assets/TileRed.png"
 #define TILE_SIDE 50
 
 // Font Settings

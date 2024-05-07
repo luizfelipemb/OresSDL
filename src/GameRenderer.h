@@ -3,10 +3,10 @@
 #include <memory>
 #include "BoardLogic.h"
 
-class GameRenderer
+class InGameRenderer
 {
 public:
-	GameRenderer(std::shared_ptr<BoardLogic> boardLogic, std::shared_ptr<RenderWrapperBase> render);
+	InGameRenderer(std::shared_ptr<BoardLogic> boardLogic, std::shared_ptr<RenderWrapperBase> render);
 	void UpdateRender();
 	std::shared_ptr<RenderWrapperBase> render;
 private:
