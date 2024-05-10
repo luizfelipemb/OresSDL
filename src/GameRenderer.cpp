@@ -10,12 +10,13 @@ InGameRenderer::InGameRenderer(std::shared_ptr<BoardLogic> boardLogic, std::shar
 
 void InGameRenderer::UpdateRender()
 {
-	render->Draw(BACKGROUND_IMAGE, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 1);
-
+	render->RenderImage(BACKGROUND_IMAGE, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 1);
 	//Update Board Tiles
 	for (auto& tile : boardLogic->GetTiles()) {
 		for (auto& tile2 : tile)
 		{
+			if (tile2.GetColor() == Colors::Empty)
+				continue;
 			std::string image;
 			switch (tile2.GetColor())
 			{
@@ -37,7 +38,8 @@ void InGameRenderer::UpdateRender()
 			default:
 				break;
 			}
-			render->Draw(image, tile2.GetX(), tile2.GetY(), TILE_SIDE, TILE_SIDE, 1);
+			render->RenderImage(image, tile2.GetX(), tile2.GetY(), TILE_SIDE, TILE_SIDE, 1);
+			render->RenderText(std::to_string(tile2.GetX())+";"+ std::to_string(tile2.GetY()), "assets/pixel.ttf", 10, tile2.GetX(), tile2.GetY(), 1);
 		}
 	}
 

@@ -17,15 +17,10 @@
 #define TILE_RED_IMAGE "assets/TileRed.png"
 #define TILE_SIDE 50
 
-// Font Settings
-#define FONT_DIRECTORY "assets/RetroGaming.ttf"
-#define UIFONTSIZE 65
-
-// Audio Settings
-#define VOLUME 60
-
-
 // Board Settings
 #define BOARD_GAMESTART_COLUMNS 7
 #define BOARD_COLUMN_BLOCK_NUMBER 10
 #define BOARD_INITIALCOLUMN_HEIGHT_POS 50
+
+// Game Settings
+#define PUSH_TIMER 3

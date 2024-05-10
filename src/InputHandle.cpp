@@ -8,19 +8,25 @@ void InputHandler::HandleEvents()
 	switch (event.type)
 	{
 	case SDL_QUIT:
+		for (InputObserver* observer : observers)
+		{
+			std::cout << "Quit Input" << std::endl;
+			observer->OnQuitWindowClick();
+		}
 		break;
 	case SDL_MOUSEBUTTONDOWN:
+
+		break;
+	case SDL_MOUSEBUTTONUP:
 		if (event.button.button == SDL_BUTTON_LEFT) {
 			int mouseX = event.button.x;
 			int mouseY = event.button.y;
-			std::cout << "Mouse Button Down with x:"<<mouseX << " y:" << mouseY << std::endl;
+			std::cout << "Mouse Button Down with x:" << mouseX << " y:" << mouseY << std::endl;
 
-			for (std::shared_ptr<InputObserver> observer : observers) {
+			for (InputObserver* observer : observers) {
 				observer->OnMouseLeftClick(mouseX, mouseY);
 			}
 		}
-		break;
-	case SDL_MOUSEBUTTONUP:
 		break;
 	case SDL_MOUSEMOTION:
 		break;

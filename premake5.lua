@@ -33,18 +33,21 @@ project "OresSDL"
         includedirs 
 		{ 
 		"vendor/SDL2-2.30.3/include",
-		"vendor/SDL2_image-2.8.2/include"
+		"vendor/SDL2_image-2.8.2/include",
+		"vendor/SDL2_ttf-2.22.0/include"
 		}
         libdirs 
 		{ 
 		"vendor/SDL2-2.30.3/lib/x64",
-		"vendor/SDL2_image-2.8.2/lib/x64"
+		"vendor/SDL2_image-2.8.2/lib/x64",
+		"vendor/SDL2_ttf-2.22.0/lib/x64"
 		}
 
-        links { "SDL2main", "SDL2","SDL2_image" }
+        links { "SDL2main", "SDL2","SDL2_image","SDL2_ttf" }
 		
  -- Post-build action to copy SDL2.dll
         postbuildcommands {
             "{COPY} %{path.getabsolute('vendor/SDL2-2.30.3/lib/x64/SDL2.dll')} %{cfg.targetdir}",
-			"{COPY} %{path.getabsolute('vendor/SDL2_image-2.8.2/lib/x64/SDL2_image.dll')} %{cfg.targetdir}"
+			"{COPY} %{path.getabsolute('vendor/SDL2_image-2.8.2/lib/x64/SDL2_image.dll')} %{cfg.targetdir}",
+			"{COPY} %{path.getabsolute('vendor/SDL2_ttf-2.22.0/lib/x64/SDL2_ttf.dll')} %{cfg.targetdir}"
         }

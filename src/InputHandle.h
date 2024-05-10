@@ -6,8 +6,8 @@ class InputHandler
 {
 public:
 	void HandleEvents();
-	std::vector<std::shared_ptr<InputObserver>> observers;
-	void RegisterObserver(std::shared_ptr<InputObserver> observer) {
+	std::vector<InputObserver*> observers;
+	void RegisterObserver(InputObserver* observer) {
 		observers.push_back(observer);
 	}
 

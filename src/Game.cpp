@@ -11,33 +11,35 @@ Game::Game()
 	inputHandle = std::make_shared<InputHandler>();
 
 	inGameState = std::make_shared<InGameState>(render);
+	inputHandle->RegisterObserver(this);
 	SwitchState(inGameState);
 }
 
 void Game::Update()
 {
-	while (!SDL_TICKS_PASSED(SDL_GetTicks(), last_frame_time + FRAME_TARGET_TIME));
-	last_frame_time = SDL_GetTicks();
+	// Calculate delta time
+	Uint32 currentTicks = SDL_GetTicks();
+	float deltaTime = (currentTicks - last_frame_time) / 1000.0f; // Convert milliseconds to seconds
+	last_frame_time = currentTicks;
 
 	inputHandle->HandleEvents();
-	currentState->Update();
+	currentState->Update(deltaTime);
 	render->UpdateRender();
+	
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), last_frame_time + FRAME_TARGET_TIME));
+}
 
-	SDL_Event windowEvent;
-	if (SDL_PollEvent(&windowEvent))
-	{
-		if (SDL_QUIT == windowEvent.type)
-		{
-			Running = false;
-		}
-	}
+void Game::OnQuitWindowClick()
+{
+	Running = false;
+	std::cout << "Trying to quit" << std::endl;
 }
 
 void Game::SwitchState(std::shared_ptr<GameStateBase> newState)
 {
 	if(currentState)
 		currentState->OnExit();
-	inputHandle->RegisterObserver(newState);
+	inputHandle->RegisterObserver(newState.get());
 	currentState = newState;
 	currentState->OnEnter();
 }

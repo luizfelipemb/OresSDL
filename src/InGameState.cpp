@@ -1,4 +1,5 @@
 #include "InGameState.h"
+#include "Configs.h"
 
 InGameState::InGameState(std::shared_ptr<RenderWrapperBase> render)
 {
@@ -11,9 +12,14 @@ void InGameState::OnEnter()
 	
 }
 
-void InGameState::Update()
+void InGameState::Update(float deltaTime)
 {
-	boardLogic->Update();
+	pushTimer += deltaTime;
+	if (pushTimer >= PUSH_TIMER)
+	{
+		boardLogic->AddNewColumn();
+		pushTimer = 0;
+	}
 	gameRenderer->UpdateRender();
 }
 
