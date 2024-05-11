@@ -10,7 +10,7 @@ BoardLogic::BoardLogic()
 		tiles.emplace_back();
 		for (int rowIndex = 0; rowIndex < BOARD_COLUMN_BLOCK_NUMBER; ++rowIndex)
 		{
-			float xPos = WINDOW_WIDTH - TILE_SIDE - columnIndex * TILE_SIDE;
+			float xPos = WINDOW_WIDTH - ((BOARD_GAMESTART_COLUMNS - columnIndex) * TILE_SIDE);
 			float yPos = WINDOW_HEIGHT - BOARD_INITIALCOLUMN_HEIGHT_POS - TILE_SIDE - rowIndex * TILE_SIDE;
 			tiles[columnIndex].emplace_back(xPos, yPos, TILE_SIDE, GetRandomColor());
 		}

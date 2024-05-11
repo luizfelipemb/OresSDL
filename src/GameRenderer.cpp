@@ -12,14 +12,14 @@ void InGameRenderer::UpdateRender()
 {
 	render->RenderImage(BACKGROUND_IMAGE, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 1);
 	//Update Board Tiles
-	for (auto& tile : boardLogic->GetTiles()) {
-		for (auto& tile2 : tile)
-		{
-			if (tile2.GetColor() == Colors::Empty)
+	for (size_t column_index = 0; column_index < boardLogic->GetTiles().size(); ++column_index) {
+		auto& column = boardLogic->GetTiles()[column_index];
+		for (size_t tile_index = 0; tile_index < column.size(); ++tile_index) {
+			auto& tile = column[tile_index];
+			if (tile.GetColor() == Colors::Empty)
 				continue;
 			std::string image;
-			switch (tile2.GetColor())
-			{
+			switch (tile.GetColor()) {
 			case Colors::Grey:
 				image = TILE_GREY_IMAGE;
 				break;
@@ -38,10 +38,12 @@ void InGameRenderer::UpdateRender()
 			default:
 				break;
 			}
-			render->RenderImage(image, tile2.GetX(), tile2.GetY(), TILE_SIDE, TILE_SIDE, 1);
-			render->RenderText(std::to_string(tile2.GetX())+";"+ std::to_string(tile2.GetY()), "assets/pixel.ttf", 10, tile2.GetX(), tile2.GetY(), 1);
+			render->RenderImage(image, tile.GetX(), tile.GetY(), TILE_SIDE, TILE_SIDE, 1);
+			render->RenderText(std::to_string(column_index) + "," + std::to_string(tile_index),
+				"assets/pixel.ttf", 15, tile.GetX(), tile.GetY(), 1);
 		}
 	}
+
 
 	render->UpdateRender();
 }
