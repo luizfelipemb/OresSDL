@@ -5,16 +5,7 @@
 
 BoardLogic::BoardLogic()
 {
-	for (int columnIndex = 0; columnIndex < BOARD_GAMESTART_COLUMNS; ++columnIndex)
-	{
-		tiles.emplace_back();
-		for (int rowIndex = 0; rowIndex < BOARD_COLUMN_BLOCK_NUMBER; ++rowIndex)
-		{
-			float xPos = WINDOW_WIDTH - ((BOARD_GAMESTART_COLUMNS - columnIndex) * TILE_SIDE);
-			float yPos = WINDOW_HEIGHT - BOARD_INITIALCOLUMN_HEIGHT_POS - TILE_SIDE - rowIndex * TILE_SIDE;
-			tiles[columnIndex].emplace_back(xPos, yPos, TILE_SIDE, GetRandomColor());
-		}
-	}
+	ResetBoard();
 }
 
 void BoardLogic::TryBreakTileAt(int PosX, int PosY)
@@ -47,11 +38,12 @@ void BoardLogic::TryBreakTileAt(int PosX, int PosY)
 
 				if (hasSameColorNeighbor)
 				{
+					tile.SetColor(Colors::Empty);
 					BreakTileAtIndexIfColor(columnIndex + 1, rowIndex, tileColor);
 					BreakTileAtIndexIfColor(columnIndex - 1, rowIndex, tileColor);
 					BreakTileAtIndexIfColor(columnIndex, rowIndex - 1, tileColor);
 					BreakTileAtIndexIfColor(columnIndex, rowIndex + 1, tileColor);
-					tile.SetColor(Colors::Empty);
+					blocksBroke++;
 				}
 				ReorganizeTiles();
 
@@ -63,6 +55,13 @@ void BoardLogic::TryBreakTileAt(int PosX, int PosY)
 
 void BoardLogic::AddNewColumn()
 {
+	//game over
+	if (tiles.size() >= BOARD_MAX_COLUMN_SIZE) {
+		std::cout << "Game Over" << std::endl;
+		return;
+	}
+		
+	
 	//translate all blocks one tile to left
 	for (size_t columnIndex = 0; columnIndex < tiles.size(); ++columnIndex)
 	{
@@ -83,6 +82,22 @@ void BoardLogic::AddNewColumn()
 	}
 }
 
+void BoardLogic::ResetBoard()
+{
+	blocksBroke = 0;
+	tiles.clear();
+	for (int columnIndex = 0; columnIndex < BOARD_GAMESTART_COLUMNS; ++columnIndex)
+	{
+		tiles.emplace_back();
+		for (int rowIndex = 0; rowIndex < BOARD_COLUMN_BLOCK_NUMBER; ++rowIndex)
+		{
+			float xPos = WINDOW_WIDTH - ((BOARD_GAMESTART_COLUMNS - columnIndex) * TILE_SIDE);
+			float yPos = WINDOW_HEIGHT - BOARD_INITIALCOLUMN_HEIGHT_POS - TILE_SIDE - rowIndex * TILE_SIDE;
+			tiles[columnIndex].emplace_back(xPos, yPos, TILE_SIDE, GetRandomColor());
+		}
+	}
+}
+
 void BoardLogic::BreakTileAtIndexIfColor(const int columnIndex, const int rowIndex, const Colors color)
 {
 	if (!(columnIndex < tiles.size()) || !(columnIndex >= 0) || !(rowIndex >= 0) || !(rowIndex < tiles[columnIndex].size()))
@@ -91,6 +106,7 @@ void BoardLogic::BreakTileAtIndexIfColor(const int columnIndex, const int rowInd
 	BlockTile& tile = tiles[columnIndex][rowIndex];
 	if (tile.GetColor() == color) {
 		tile.SetColor(Colors::Empty);
+		blocksBroke++;
 		BreakTileAtIndexIfColor(columnIndex + 1, rowIndex, color);
 		BreakTileAtIndexIfColor(columnIndex - 1, rowIndex, color);
 		BreakTileAtIndexIfColor(columnIndex, rowIndex + 1, color);

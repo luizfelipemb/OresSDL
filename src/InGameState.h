@@ -3,6 +3,7 @@
 #include "BoardLogic.h"
 #include <iostream>
 #include "GameRenderer.h"
+#include "Configs.h"
 
 class InGameState : public GameStateBase
 {
@@ -16,5 +17,8 @@ private:
 	std::shared_ptr<BoardLogic> boardLogic;
 	std::shared_ptr<InGameRenderer> gameRenderer;
 	float pushTimer = 0;
+	int currentLevel = 1;
+	int pointsToNextLevel = NEXT_LEVEL_SCORE;
+	int score = 0;
 };
 

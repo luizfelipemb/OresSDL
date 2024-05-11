@@ -8,7 +8,7 @@ InGameRenderer::InGameRenderer(std::shared_ptr<BoardLogic> boardLogic, std::shar
 	this->render = render;
 }
 
-void InGameRenderer::UpdateRender()
+void InGameRenderer::UpdateRender(int score, int level, int pointsToNextLevel)
 {
 	render->RenderImage(BACKGROUND_IMAGE, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 1);
 	//Update Board Tiles
@@ -40,10 +40,11 @@ void InGameRenderer::UpdateRender()
 			}
 			render->RenderImage(image, tile.GetX(), tile.GetY(), TILE_SIDE, TILE_SIDE, 1);
 			render->RenderText(std::to_string(column_index) + "," + std::to_string(tile_index),
-				"assets/pixel.ttf", 15, tile.GetX(), tile.GetY(), 1);
+				FONT_LOCATION, 15, tile.GetX(), tile.GetY(), 1);
 		}
 	}
-
+	render->RenderText("Score:" + std::to_string(score)+"/"+ std::to_string(pointsToNextLevel), FONT_LOCATION, 30, 0, 0, 1);
+	render->RenderText("Level:" + std::to_string(level), FONT_LOCATION, 30, WINDOW_WIDTH / 2, 0, 1);
 
 	render->UpdateRender();
 }
