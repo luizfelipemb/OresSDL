@@ -7,7 +7,7 @@ class BoardLogic
 public:
 	BoardLogic();
 	void TryBreakTileAt(int PosX, int PosY);
-	void AddNewColumn();
+	bool TryAddNewColumn();
 	const std::vector<std::vector<BlockTile>>& GetTiles() const { return tiles; };
 	const int GetBlocksBroke() const { return blocksBroke; };
 	void ResetBoard();

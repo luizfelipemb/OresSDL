@@ -1,12 +1,9 @@
-#include "SDL.h" 
 #include "Game.h"
-#include "Configs.h"
 #include <iostream>
 
-Game* game = nullptr;
 int main(int argc, char* argv[])
 {
-	game = new Game();
+	std::unique_ptr<Game> game = std::make_unique<Game>();
 	while (game->Running)
 	{
 		game->Update();

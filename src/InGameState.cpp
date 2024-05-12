@@ -1,14 +1,19 @@
 #include "InGameState.h"
 
-InGameState::InGameState(std::shared_ptr<RenderWrapperBase> render)
+InGameState::InGameState(Game* game, std::shared_ptr<RenderWrapperBase> render)
 {
+	this->game = game;
 	boardLogic = std::make_shared<BoardLogic>();
 	gameRenderer = std::make_shared<InGameRenderer>(boardLogic, render);
 }
 
 void InGameState::OnEnter()
 {
-	
+	boardLogic->ResetBoard();
+	pushTimer = 0;
+	currentLevel = 1;
+	pointsToNextLevel = NEXT_LEVEL_SCORE;
+	score = 0;
 }
 
 void InGameState::Update(float deltaTime)
@@ -17,7 +22,10 @@ void InGameState::Update(float deltaTime)
 	pushTimer += deltaTime;
 	if (pushTimer >= PUSH_TIMER)
 	{
-		boardLogic->AddNewColumn();
+		if (!boardLogic->TryAddNewColumn()) {
+			std::cout << "Game Over" << std::endl;
+			game->SwitchState(game->menuState);
+		}
 		pushTimer = 0;
 	}
 

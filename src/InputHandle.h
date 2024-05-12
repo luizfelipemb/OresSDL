@@ -11,7 +11,10 @@ public:
 		observers.push_back(observer);
 	}
 
-	void RemoveObserver(std::shared_ptr<InputObserver> observer) {
-		// You can implement the removal logic if needed.
+	void RemoveObserver(InputObserver* observer) {
+		auto it = std::find(observers.begin(), observers.end(), observer);
+		if (it != observers.end()) {
+			observers.erase(it);
+		}
 	}
 };

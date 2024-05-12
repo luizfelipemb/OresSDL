@@ -10,9 +10,11 @@ Game::Game()
 	render = std::make_shared<SDLRenderWrapper>(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_FULLSCREEN);
 	inputHandle = std::make_shared<InputHandler>();
 
-	inGameState = std::make_shared<InGameState>(render);
+	inGameState = std::make_shared<InGameState>(std::move(this), render);
+	menuState = std::make_shared<MenuState>(std::move(this), render);
+
 	inputHandle->RegisterObserver(this);
-	SwitchState(inGameState);
+	SwitchState(menuState);
 }
 
 void Game::Update()
@@ -32,11 +34,11 @@ void Game::Update()
 void Game::OnQuitWindowClick()
 {
 	Running = false;
-	std::cout << "Trying to quit" << std::endl;
 }
 
 void Game::SwitchState(std::shared_ptr<GameStateBase> newState)
 {
+	inputHandle->RemoveObserver(currentState.get());
 	if(currentState)
 		currentState->OnExit();
 	inputHandle->RegisterObserver(newState.get());

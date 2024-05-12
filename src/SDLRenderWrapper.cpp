@@ -96,8 +96,9 @@ void SDLRenderWrapper::ClearAllTextures()
 	textureMap.clear();
 }
 
-void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fontFile, int fontSize, int x, int y, double scale)
-{// Load font
+void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fontFile, int fontSize, int x, int y, double scale, bool centered)
+{
+	// Load font
 	TTF_Font* font = TTF_OpenFont(fontFile.c_str(), fontSize);
 	if (!font) {
 		std::cerr << "Error loading font: " << TTF_GetError() << std::endl;
@@ -105,7 +106,7 @@ void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fo
 	}
 
 	// Render text
-	SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), SDL_Color{0,0,0});
+	SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), SDL_Color{ 0,0,0 });
 	if (!surface) {
 		std::cerr << "Error rendering text: " << TTF_GetError() << std::endl;
 		TTF_CloseFont(font);
@@ -121,9 +122,15 @@ void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fo
 		return;
 	}
 
-	// Set rendering scale
-	int textWidth = surface->w * scale;
-	int textHeight = surface->h * scale;
+	// Calculate text dimensions
+	int textWidth = static_cast<int>(surface->w * scale);
+	int textHeight = static_cast<int>(surface->h * scale);
+
+	// Adjust position for centered text
+	if (centered) {
+		x -= textWidth / 2;
+		y -= textHeight / 2;
+	}
 
 	// Destination rectangle
 	SDL_Rect destRect = { x, y, textWidth, textHeight };

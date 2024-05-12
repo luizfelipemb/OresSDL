@@ -53,15 +53,13 @@ void BoardLogic::TryBreakTileAt(int PosX, int PosY)
 	}
 }
 
-void BoardLogic::AddNewColumn()
+bool BoardLogic::TryAddNewColumn()
 {
 	//game over
 	if (tiles.size() >= BOARD_MAX_COLUMN_SIZE) {
-		std::cout << "Game Over" << std::endl;
-		return;
+		return false;
 	}
 		
-	
 	//translate all blocks one tile to left
 	for (size_t columnIndex = 0; columnIndex < tiles.size(); ++columnIndex)
 	{
@@ -80,6 +78,7 @@ void BoardLogic::AddNewColumn()
 		float yPos = WINDOW_HEIGHT - BOARD_INITIALCOLUMN_HEIGHT_POS - TILE_SIDE - rowIndex * TILE_SIDE;
 		tiles[tiles.size()-1].emplace_back(xPos, yPos, TILE_SIDE, GetRandomColor());
 	}
+	return true;
 }
 
 void BoardLogic::ResetBoard()

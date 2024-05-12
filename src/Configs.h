@@ -15,12 +15,13 @@
 #define TILE_BLUE_IMAGE "assets/TileBlue.png"
 #define TILE_GREEN_IMAGE "assets/TileGreen.png"
 #define TILE_RED_IMAGE "assets/TileRed.png"
-#define TILE_SIDE 50
+#define BUTTON_IMAGE "assets/Button.png"
 
 // Board Settings
+#define TILE_SIDE 50
 #define BOARD_GAMESTART_COLUMNS 7
 #define BOARD_COLUMN_BLOCK_NUMBER 10
-#define BOARD_INITIALCOLUMN_HEIGHT_POS 50
+#define BOARD_INITIALCOLUMN_HEIGHT_POS 100
 #define BOARD_MAX_COLUMN_SIZE 16
 
 // Game Settings
