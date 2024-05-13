@@ -10,6 +10,7 @@
 
 // Image Settings
 #define BACKGROUND_IMAGE "assets/background.jpg"
+#define SIGN_IMAGE "assets/Sign.png"
 #define TILE_GREY_IMAGE "assets/TileGrey.png"
 #define TILE_YELLOW_IMAGE "assets/TileYellow.png"
 #define TILE_BLUE_IMAGE "assets/TileBlue.png"
@@ -25,7 +26,7 @@
 #define BOARD_MAX_COLUMN_SIZE 16
 
 // Game Settings
-#define PUSH_TIMER 3
+#define PUSH_TIMER 1
 #define NEXT_LEVEL_SCORE 10
 #define NEXT_LEVEL_SCORE_MULTIPLY 1.6f
 

@@ -29,7 +29,7 @@ void InGameState::Update(float deltaTime)
 		pushTimer = 0;
 	}
 
-	gameRenderer->UpdateRender(score,currentLevel,pointsToNextLevel);
+	gameRenderer->UpdateRender(score,currentLevel,pointsToNextLevel,pushTimer,PUSH_TIMER);
 }
 
 void InGameState::OnExit()

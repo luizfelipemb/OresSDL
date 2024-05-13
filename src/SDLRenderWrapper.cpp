@@ -145,3 +145,14 @@ void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fo
 	SDL_FreeSurface(surface);
 	TTF_CloseFont(font);
 }
+
+void SDLRenderWrapper::DrawRectangle(int x, int y, int width, int height, std::uint8_t red, std::uint8_t green, std::uint8_t blue) {
+	// Set render color
+	SDL_SetRenderDrawColor(renderer, red, green, blue, SDL_ALPHA_OPAQUE);
+
+	// Define rectangle
+	SDL_Rect rect = { x, y, width, height };
+
+	// Draw rectangle
+	SDL_RenderFillRect(renderer, &rect);
+}
