@@ -157,7 +157,7 @@ void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fo
 }
 
 
-void SDLRenderWrapper::DrawRectangle(int x, int y, int width, int height, Color color) {
+void SDLRenderWrapper::DrawRectangle(int x, int y, float width, float height, Color color) {
 	// Set render color
 	SDL_SetRenderDrawColor(renderer, color.red, color.green, color.blue, SDL_ALPHA_OPAQUE);
 

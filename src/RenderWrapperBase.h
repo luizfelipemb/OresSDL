@@ -18,6 +18,6 @@ public:
 	virtual void ClearFromTextureMap(std::string filename) = 0;
 	virtual void ClearAllTextures() = 0;
 	virtual void RenderText(const std::string& text, const std::string& fontFile, int fontSize, int x, int y, double scale = 1, bool centered = 0, std::optional<Color> color = std::nullopt) = 0;
-	virtual void DrawRectangle(int x, int y, int width, int height, Color color) = 0;
+	virtual void DrawRectangle(int x, int y, float width, float height, Color color) = 0;
 };
 
