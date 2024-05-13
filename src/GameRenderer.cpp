@@ -11,14 +11,19 @@ InGameRenderer::InGameRenderer(std::shared_ptr<BoardLogic> boardLogic, std::shar
 void InGameRenderer::UpdateRender(int score, int level, int pointsToNextLevel, float pushTimer, float maxPushTimer)
 {
 	render->RenderImage(BACKGROUND_IMAGE, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 1);
-	render->RenderImage(SIGN_IMAGE, WINDOW_WIDTH-TILE_SIDE*BOARD_MAX_COLUMN_SIZE - 6, 100, 6, 790, 1);
+	render->RenderImage(SIGN_IMAGE, WINDOW_WIDTH - TILE_SIDE*BOARD_MAX_COLUMN_SIZE - 6, 100, 6, 790, 1);
 	render->RenderText("End Zone", FONT_LOCATION, 30,WINDOW_WIDTH - TILE_SIDE * BOARD_MAX_COLUMN_SIZE, 100, 1, 0);
 	RenderBoardTiles();
-	//render->RenderText("Score:" + std::to_string(score)+"/"+ std::to_string(pointsToNextLevel), FONT_LOCATION, 30, 0, 0, 1);
-	//render->RenderText("Level:" + std::to_string(level), FONT_LOCATION, 30, WINDOW_WIDTH / 2, 0, 1);
-	render->DrawRectangle(0, 0, 100, 100, 255, 0, 0);
-	render->RenderText("Push:" + std::to_string(static_cast<int>(pushTimer * 100) / 100.0f) + "/" 
-		+ std::to_string(static_cast<int>(maxPushTimer * 100) / 100.0f), FONT_LOCATION, 30, WINDOW_WIDTH / 2, 0, 1);
+
+	render->RenderText("Score:" + std::to_string(score), FONT_LOCATION, 30, 0, 0, 1);
+	render->DrawRectangle(SCORE_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH, UI_BARS_HEIGHT, DARK_GREEN_COLOR);
+	render->DrawRectangle(SCORE_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH *(float)score / pointsToNextLevel, UI_BARS_HEIGHT, GREEN_COLOR);
+	
+	render->RenderText("Level:" + std::to_string(level), FONT_LOCATION, 30, SCORE_UI_POS_X - 140, 0, 1);
+
+	render->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH, UI_BARS_HEIGHT, DARK_RED_COLOR);
+	render->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH * pushTimer, UI_BARS_HEIGHT, RED_COLOR);
+	render->RenderText("Push:", FONT_LOCATION, 30, PUSH_UI_POS_X - UI_BARS_WIDTH, 0, 1);
 
 	render->UpdateRender();
 }
@@ -31,27 +36,25 @@ void InGameRenderer::RenderBoardTiles()
 			auto& tile = column[tile_index];
 			if (tile.GetColor() == Colors::Empty)
 				continue;
-			std::string image;
+
+			Color color = { 255,255,255 };
 			switch (tile.GetColor()) {
-			case Colors::Grey:
-				image = TILE_GREY_IMAGE;
-				break;
 			case Colors::Blue:
-				image = TILE_BLUE_IMAGE;
+				color = BLUE_COLOR;
 				break;
 			case Colors::Green:
-				image = TILE_GREEN_IMAGE;
+				color = GREEN_COLOR;
 				break;
 			case Colors::Red:
-				image = TILE_RED_IMAGE;
+				color = RED_COLOR;
 				break;
 			case Colors::Yellow:
-				image = TILE_YELLOW_IMAGE;
+				color = YELLOW_COLOR;
 				break;
 			default:
 				break;
 			}
-			render->RenderImage(image, tile.GetX(), tile.GetY(), TILE_SIDE, TILE_SIDE, 1);
+			render->RenderImage(TILE_GREY_IMAGE, tile.GetX(), tile.GetY(), TILE_SIDE, TILE_SIDE, 1, color);
 			render->RenderText(std::to_string(column_index) + "," + std::to_string(tile_index),
 				FONT_LOCATION, 15, tile.GetX(), tile.GetY(), 1);
 		}

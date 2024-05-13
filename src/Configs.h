@@ -8,15 +8,24 @@
 #define WINDOW_FPS 60
 #define FRAME_TARGET_TIME (1000/WINDOW_FPS)
 
-// Image Settings
+// Visual Settings
 #define BACKGROUND_IMAGE "assets/background.jpg"
 #define SIGN_IMAGE "assets/Sign.png"
 #define TILE_GREY_IMAGE "assets/TileGrey.png"
-#define TILE_YELLOW_IMAGE "assets/TileYellow.png"
-#define TILE_BLUE_IMAGE "assets/TileBlue.png"
-#define TILE_GREEN_IMAGE "assets/TileGreen.png"
-#define TILE_RED_IMAGE "assets/TileRed.png"
 #define BUTTON_IMAGE "assets/Button.png"
+	//Colors
+#define BLUE_COLOR {140,140,255}
+#define GREEN_COLOR {140,255,140}
+#define DARK_GREEN_COLOR {0,120,0}
+#define RED_COLOR {255,140,140}
+#define DARK_RED_COLOR {120,0,0}
+#define YELLOW_COLOR {255,255,140}
+	//UI Positions
+#define ABOVE_UI_POS_Y WINDOW_HEIGHT / 100
+#define UI_BARS_WIDTH 100
+#define UI_BARS_HEIGHT 20
+#define PUSH_UI_POS_X WINDOW_WIDTH/2 * 1.6f
+#define SCORE_UI_POS_X WINDOW_WIDTH/2
 
 // Board Settings
 #define TILE_SIDE 50

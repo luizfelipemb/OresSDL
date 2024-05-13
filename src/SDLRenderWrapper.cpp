@@ -68,22 +68,28 @@ bool SDLRenderWrapper::LoadTexture(std::string fileName)
 	return false;
 }
 
-void SDLRenderWrapper::RenderImage(std::string filename, int x, int y, int w, int h, double scale)
+void SDLRenderWrapper::RenderImage(std::string filename, int x, int y, int w, int h, double scale, std::optional<Color> color)
 {
 	SDL_Rect destRect;
 	destRect.x = x;
 	destRect.y = y;
-	destRect.w = w;
-	destRect.h = h;
-	destRect.w *= scale;
-	destRect.h *= scale;
+	destRect.w = w * scale;
+	destRect.h = h * scale;
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 
 	if (textureMap.find(filename) == textureMap.end())
 		LoadTexture(filename);
 
+	if (color.has_value()) {
+		SDL_SetTextureColorMod(textureMap[filename], color->red, color->green, color->blue);
+	}
+
 	if (SDL_RenderCopyEx(renderer, textureMap[filename], NULL, &destRect, 0, NULL, flip) != 0)
 		std::cout << SDL_GetError() << std::endl;
+
+	if (color.has_value()) {
+		SDL_SetTextureColorMod(textureMap[filename], 255, 255, 255);
+	}
 }
 
 void SDLRenderWrapper::ClearFromTextureMap(std::string filename)
@@ -146,9 +152,9 @@ void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fo
 	TTF_CloseFont(font);
 }
 
-void SDLRenderWrapper::DrawRectangle(int x, int y, int width, int height, std::uint8_t red, std::uint8_t green, std::uint8_t blue) {
+void SDLRenderWrapper::DrawRectangle(int x, int y, int width, int height, Color color) {
 	// Set render color
-	SDL_SetRenderDrawColor(renderer, red, green, blue, SDL_ALPHA_OPAQUE);
+	SDL_SetRenderDrawColor(renderer, color.red, color.green, color.blue, SDL_ALPHA_OPAQUE);
 
 	// Define rectangle
 	SDL_Rect rect = { x, y, width, height };
