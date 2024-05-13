@@ -102,7 +102,7 @@ void SDLRenderWrapper::ClearAllTextures()
 	textureMap.clear();
 }
 
-void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fontFile, int fontSize, int x, int y, double scale, bool centered)
+void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fontFile, int fontSize, int x, int y, double scale, bool centered, std::optional<Color> color)
 {
 	// Load font
 	TTF_Font* font = TTF_OpenFont(fontFile.c_str(), fontSize);
@@ -112,7 +112,11 @@ void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fo
 	}
 
 	// Render text
-	SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), SDL_Color{ 0,0,0 });
+	SDL_Color textColor = { 0, 0, 0 }; // Default color (black)
+	if (color.has_value()) {
+		textColor = SDL_Color{ color->red, color->green, color->blue };
+	}
+	SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), textColor);
 	if (!surface) {
 		std::cerr << "Error rendering text: " << TTF_GetError() << std::endl;
 		TTF_CloseFont(font);
@@ -151,6 +155,7 @@ void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fo
 	SDL_FreeSurface(surface);
 	TTF_CloseFont(font);
 }
+
 
 void SDLRenderWrapper::DrawRectangle(int x, int y, int width, int height, Color color) {
 	// Set render color

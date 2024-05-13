@@ -4,7 +4,7 @@ MenuState::MenuState(Game* game, std::shared_ptr<RenderWrapperBase> render) : ga
 {
 	menuRenderer = std::make_shared<MenuRenderer>(render);
 
-	Button playButton = { WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2,100,50,"Play", [&]() { OnPlayButtonClick(); } };
+	Button playButton = { PLAY_BUTTON_X,WINDOW_HEIGHT / 2,PLAY_BUTTON_WIDTH,WINDOW_HEIGHT/10,"Play", [&]() { OnPlayButtonClick(); } };
 	buttons.push_back(playButton);
 }
 

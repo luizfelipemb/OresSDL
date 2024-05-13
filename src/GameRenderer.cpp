@@ -10,20 +10,20 @@ InGameRenderer::InGameRenderer(std::shared_ptr<BoardLogic> boardLogic, std::shar
 
 void InGameRenderer::UpdateRender(int score, int level, int pointsToNextLevel, float pushTimer, float maxPushTimer)
 {
-	render->RenderImage(BACKGROUND_IMAGE, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 1);
-	render->RenderImage(SIGN_IMAGE, WINDOW_WIDTH - TILE_SIDE*BOARD_MAX_COLUMN_SIZE - 6, 100, 6, 790, 1);
-	render->RenderText("End Zone", FONT_LOCATION, 30,WINDOW_WIDTH - TILE_SIDE * BOARD_MAX_COLUMN_SIZE, 100, 1, 0);
+	render->DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR);
+	render->RenderImage(SIGN_IMAGE, WINDOW_WIDTH - TILE_SIDE * BOARD_MAX_COLUMN_SIZE - 6, WINDOW_HEIGHT/5, 6, 790, 1);
+	render->RenderText("End Zone", FONT_LOCATION, 30, WINDOW_WIDTH - TILE_SIDE * BOARD_MAX_COLUMN_SIZE, 100, 1, false, { {255,255,255} });
 	RenderBoardTiles();
 
-	render->RenderText("Score:" + std::to_string(score), FONT_LOCATION, 30, 0, 0, 1);
+	render->RenderText("Score:" + std::to_string(score), FONT_LOCATION, 30, WINDOW_WIDTH*0.04f, 0, 1, false, { TEXT_COLOR });
 	render->DrawRectangle(SCORE_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH, UI_BARS_HEIGHT, DARK_GREEN_COLOR);
 	render->DrawRectangle(SCORE_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH *(float)score / pointsToNextLevel, UI_BARS_HEIGHT, GREEN_COLOR);
 	
-	render->RenderText("Level:" + std::to_string(level), FONT_LOCATION, 30, SCORE_UI_POS_X - 140, 0, 1);
+	render->RenderText("Level:" + std::to_string(level), FONT_LOCATION, 30, SCORE_UI_POS_X - 140, 0, 1,false, { TEXT_COLOR });
 
 	render->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH, UI_BARS_HEIGHT, DARK_RED_COLOR);
 	render->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH * pushTimer, UI_BARS_HEIGHT, RED_COLOR);
-	render->RenderText("Push:", FONT_LOCATION, 30, PUSH_UI_POS_X - UI_BARS_WIDTH, 0, 1);
+	render->RenderText("Push:", FONT_LOCATION, 30, PUSH_UI_POS_X - UI_BARS_WIDTH, 0, 1, false, { TEXT_COLOR });
 
 	render->UpdateRender();
 }

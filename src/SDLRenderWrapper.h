@@ -14,7 +14,7 @@ public:
 	void RenderImage(std::string filename, int x, int y, int w, int h, double scale, std::optional<Color> color = std::nullopt) override;
 	void ClearFromTextureMap(std::string filename) override;
 	void ClearAllTextures() override;
-	void RenderText(const std::string& text, const std::string& fontFile, int fontSize, int x, int y, double scale = 1, bool centered = 0) override;
+	void RenderText(const std::string& text, const std::string& fontFile, int fontSize, int x, int y, double scale = 1, bool centered = 0, std::optional<Color> color = std::nullopt) override;
 	void DrawRectangle(int x, int y, int width, int height, Color color) override;
 private:
 	SDL_Renderer* renderer;
