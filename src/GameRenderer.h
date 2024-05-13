@@ -7,7 +7,7 @@ class InGameRenderer
 {
 public:
 	InGameRenderer(std::shared_ptr<BoardLogic> boardLogic, std::shared_ptr<RenderWrapperBase> render);
-	void UpdateRender(int score, int level, int pointsToNextLevel,float pushTimer,float maxPushTimer);
+	void UpdateRender(int score, int levelScore, int level, int pointsToNextLevel,float pushTimer,float maxPushTimer);
 	std::shared_ptr<RenderWrapperBase> render;
 private:
 	void RenderBoardTiles();

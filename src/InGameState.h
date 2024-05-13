@@ -21,6 +21,7 @@ private:
 	float pushTimer = 0;
 	int currentLevel = 1;
 	int pointsToNextLevel = NEXT_LEVEL_SCORE;
+	int levelScore = 0;
 	int score = 0;
 };
 

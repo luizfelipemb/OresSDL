@@ -10,6 +10,7 @@ public:
 	bool TryAddNewColumn();
 	const std::vector<std::vector<BlockTile>>& GetTiles() const { return tiles; };
 	const int GetBlocksBroke() const { return blocksBroke; };
+	const int GetTotalBlocksBroke() const { return totalBlocksBroke; };
 	void ResetBoard();
 private:
 	void BreakTileAtIndexIfColor(const int columnIndex, const int rowIndex, const Colors color);
@@ -17,4 +18,5 @@ private:
 	Colors GetRandomColor();
 	std::vector<std::vector<BlockTile>> tiles;
 	int blocksBroke = 0;
+	int totalBlocksBroke = 0;
 };

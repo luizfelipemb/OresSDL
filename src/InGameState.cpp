@@ -14,6 +14,7 @@ void InGameState::OnEnter()
 	currentLevel = 1;
 	pointsToNextLevel = NEXT_LEVEL_SCORE;
 	score = 0;
+	levelScore = 0;
 }
 
 void InGameState::Update(float deltaTime)
@@ -29,7 +30,7 @@ void InGameState::Update(float deltaTime)
 		pushTimer = 0;
 	}
 
-	gameRenderer->UpdateRender(score,currentLevel,pointsToNextLevel,pushTimer,PUSH_TIMER);
+	gameRenderer->UpdateRender(score,levelScore,currentLevel,pointsToNextLevel,pushTimer,PUSH_TIMER);
 }
 
 void InGameState::OnExit()
@@ -41,11 +42,13 @@ void InGameState::OnMouseLeftClick(int PosX, int PosY)
 {
 	std::cout << "OnMouseLeftClick" << std::endl;
 	boardLogic->TryBreakTileAt(PosX, PosY);
-	score = boardLogic->GetBlocksBroke();
+	score = boardLogic->GetTotalBlocksBroke();
+	levelScore = boardLogic->GetBlocksBroke();
+
 	//check next level
-	if (score >= pointsToNextLevel)
+	if (levelScore >= pointsToNextLevel)
 	{
-		score = 0;
+		levelScore = 0;
 		currentLevel++;
 		pointsToNextLevel = std::ceil(pointsToNextLevel * NEXT_LEVEL_SCORE_MULTIPLY);
 		boardLogic->ResetBoard();

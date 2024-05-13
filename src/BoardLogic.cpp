@@ -44,6 +44,7 @@ void BoardLogic::TryBreakTileAt(int PosX, int PosY)
 					BreakTileAtIndexIfColor(columnIndex, rowIndex - 1, tileColor);
 					BreakTileAtIndexIfColor(columnIndex, rowIndex + 1, tileColor);
 					blocksBroke++;
+					totalBlocksBroke++;
 				}
 				ReorganizeTiles();
 
@@ -106,6 +107,7 @@ void BoardLogic::BreakTileAtIndexIfColor(const int columnIndex, const int rowInd
 	if (tile.GetColor() == color) {
 		tile.SetColor(Colors::Empty);
 		blocksBroke++;
+		totalBlocksBroke++;
 		BreakTileAtIndexIfColor(columnIndex + 1, rowIndex, color);
 		BreakTileAtIndexIfColor(columnIndex - 1, rowIndex, color);
 		BreakTileAtIndexIfColor(columnIndex, rowIndex + 1, color);
