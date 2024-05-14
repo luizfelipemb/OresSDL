@@ -104,7 +104,8 @@ void BoardLogic::BreakTileAtIndexIfColor(const int columnIndex, const int rowInd
 		return;
 
 	BlockTile& tile = tiles[columnIndex][rowIndex];
-	if (tile.GetColor() == color) {
+	if (tile.GetColor() == color) 
+	{
 		tile.SetColor(Colors::Empty);
 		blocksBroke++;
 		totalBlocksBroke++;
@@ -119,6 +120,29 @@ void BoardLogic::ReorganizeTiles()
 {
 	for (size_t columnIndex = 0; columnIndex < tiles.size(); ++columnIndex)
 	{
+		//check if entire column is empty
+		bool isEntireColumnEmpty = true;
+		for (size_t rowIndex = 0; rowIndex < tiles[columnIndex].size(); ++rowIndex)
+		{
+			if (tiles[columnIndex][rowIndex].GetColor() != Colors::Empty) {
+				isEntireColumnEmpty = false;
+				break;
+			}
+		}
+		if (isEntireColumnEmpty)
+		{
+			for (size_t columnIndex2 = columnIndex; columnIndex2 > 0; --columnIndex2)
+			{
+				for (size_t rowIndex = 0; rowIndex < tiles[columnIndex].size(); ++rowIndex)
+				{
+					Colors temp = tiles[columnIndex2][rowIndex].GetColor();
+					tiles[columnIndex2][rowIndex].SetColor(tiles[columnIndex2-1][rowIndex].GetColor());
+					tiles[columnIndex2 - 1][rowIndex].SetColor(temp);
+				}
+			}
+		}
+
+		//check empty rows
 		for (size_t rowIndex = 0; rowIndex < tiles[columnIndex].size() - 1; ++rowIndex)
 		{
 			if (tiles[columnIndex][rowIndex].GetColor() != Colors::Empty)
@@ -135,6 +159,7 @@ void BoardLogic::ReorganizeTiles()
 					foundOne = true;
 				}
 				addToIndex++;
+
 			} while (addToIndex + rowIndex < tiles[columnIndex].size() && !foundOne);
 
 		}

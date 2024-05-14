@@ -22,7 +22,7 @@ void InGameRenderer::UpdateRender(int score,int levelScore, int level, int point
 	render->RenderText("Level:" + std::to_string(level), FONT_LOCATION, 30, SCORE_UI_POS_X - 140, 0, 1,false, { TEXT_COLOR });
 
 	render->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH, UI_BARS_HEIGHT, DARK_RED_COLOR);
-	render->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH * pushTimer, UI_BARS_HEIGHT, RED_COLOR);
+	render->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH * (float)pushTimer/maxPushTimer, UI_BARS_HEIGHT, RED_COLOR);
 	render->RenderText("Push:", FONT_LOCATION, 30, PUSH_UI_POS_X - UI_BARS_WIDTH, 0, 1, false, { TEXT_COLOR });
 
 	render->UpdateRender();
@@ -55,8 +55,8 @@ void InGameRenderer::RenderBoardTiles()
 				break;
 			}
 			render->RenderImage(TILE_GREY_IMAGE, tile.GetX(), tile.GetY(), TILE_SIDE, TILE_SIDE, 1, color);
-			//render->RenderText(std::to_string(column_index) + "," + std::to_string(tile_index),
-			//	FONT_LOCATION, 15, tile.GetX(), tile.GetY(), 1, false, { {255,255,255} });
+			render->RenderText(std::to_string(column_index) + "," + std::to_string(tile_index),
+				FONT_LOCATION, 15, tile.GetX(), tile.GetY(), 1, false, { {255,255,255} });
 		}
 	}
 }
