@@ -1,27 +1,27 @@
 #pragma once
 #include "GameStateBase.h"
 #include <memory>
+#include "RenderWrapperBase.h"
 #include "Game.h"
-#include "MenuRenderer.h"
-#include "Button.h"
-#include <functional>
+#include "LoseRenderer.h"
 
 class Game;
 
-class MenuState : public GameStateBase
+class LoseState : public GameStateBase
 {
 public:
-	MenuState(Game* game, std::shared_ptr<RenderWrapperBase> render);
-
+	LoseState(Game* game, std::shared_ptr<RenderWrapperBase> render);
+	// Inherited via GameStateBase
 	void OnEnter() override;
 	void Update(float deltaTime) override;
 	void OnExit() override;
 	void OnMouseLeftClick(int PosX, int PosY) override;
-	void OnPlayButtonClick();
+	
 private:
+	void PlayAgain();
 	Game* game;
 	std::shared_ptr<RenderWrapperBase> render;
-	std::shared_ptr<MenuRenderer> menuRenderer;
+	std::unique_ptr<LoseRenderer> loseRenderer;
 	std::vector<Button> buttons;
 };
 

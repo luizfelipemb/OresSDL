@@ -30,6 +30,8 @@
 #define MENU_SUBTITLE "by Luiz Felipe Bustamante"
 #define PLAY_BUTTON_WIDTH WINDOW_WIDTH/8
 #define PLAY_BUTTON_X WINDOW_WIDTH/2 - PLAY_BUTTON_WIDTH/2
+	//Lose Screen
+#define LOSE_TITLE "You Lose"
 	//Colors
 #define TEXT_COLOR {252, 253, 77}
 #define BACKGROUND_COLOR {37,38,59}

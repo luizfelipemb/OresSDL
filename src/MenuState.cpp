@@ -28,10 +28,7 @@ void MenuState::OnMouseLeftClick(int PosX, int PosY)
 		if (PosX >= button.x && PosX <= button.x + button.width &&
 			PosY >= button.y && PosY <= button.y + button.height)
 		{
-			if (button.text == "Play")
-			{
-				button.OnClick();
-			}
+			button.OnClick();
 		}
 	}
 }

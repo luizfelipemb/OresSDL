@@ -5,9 +5,12 @@
 #include "GameStateBase.h"
 #include "InGameState.h"
 #include "MenuState.h"
+#include "LoseState.h"
 
 class InGameState;
 class MenuState;
+class LoseState;
+
 class Game : public InputObserver
 {
 public:
@@ -17,6 +20,7 @@ public:
 	void SwitchState(std::shared_ptr<GameStateBase> newState);
 	std::shared_ptr<InGameState> inGameState;
 	std::shared_ptr<MenuState> menuState;
+	std::shared_ptr<LoseState> loseState;
 private:
 	void OnQuitWindowClick() override;
 	int last_frame_time;

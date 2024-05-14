@@ -12,9 +12,10 @@ Game::Game()
 
 	inGameState = std::make_shared<InGameState>(std::move(this), render);
 	menuState = std::make_shared<MenuState>(std::move(this), render);
+	loseState = std::make_shared<LoseState>(std::move(this), render);
 
 	inputHandle->RegisterObserver(this);
-	SwitchState(menuState);
+	SwitchState(loseState);
 }
 
 void Game::Update()

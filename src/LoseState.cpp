@@ -1,0 +1,38 @@
+#include "LoseState.h"
+
+LoseState::LoseState(Game* game, std::shared_ptr<RenderWrapperBase> render) : game(game), render(render)
+{
+	loseRenderer = std::make_unique<LoseRenderer>(render);
+	Button againButton = { PLAY_BUTTON_X,WINDOW_HEIGHT / 1.5f,PLAY_BUTTON_WIDTH,WINDOW_HEIGHT / 10,"Again", [&]() { PlayAgain(); } };
+	buttons.push_back(againButton);
+}
+
+void LoseState::OnEnter()
+{
+}
+
+void LoseState::Update(float deltaTime)
+{
+	loseRenderer->UpdateRender(buttons);
+}
+void LoseState::OnMouseLeftClick(int PosX, int PosY)
+{
+	for (auto& button : buttons)
+	{
+		if (PosX >= button.x && PosX <= button.x + button.width &&
+			PosY >= button.y && PosY <= button.y + button.height)
+		{
+			button.OnClick();
+		}
+	}
+}
+
+void LoseState::OnExit()
+{
+}
+
+void LoseState::PlayAgain()
+{
+	std::cout << "Play Again" << std::endl;
+	game->SwitchState(game->inGameState);
+}
