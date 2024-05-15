@@ -2,6 +2,12 @@
 #include "SDLRenderWrapper.h"
 #include "Configs.h"
 
+#define ABOVE_UI_POS_Y WINDOW_HEIGHT / 100
+#define UI_BARS_WIDTH WINDOW_WIDTH / 10
+#define UI_BARS_HEIGHT WINDOW_HEIGHT / 40
+#define PUSH_UI_POS_X WINDOW_WIDTH / 1.2f
+#define SCORE_UI_POS_X WINDOW_WIDTH / 2
+
 InGameRenderer::InGameRenderer(std::shared_ptr<BoardLogic> boardLogic, std::shared_ptr<RenderWrapperBase> render)
 {
 	this->boardLogic = boardLogic;
@@ -11,24 +17,26 @@ InGameRenderer::InGameRenderer(std::shared_ptr<BoardLogic> boardLogic, std::shar
 void InGameRenderer::UpdateRender(std::vector<Button> buttons, int score,int levelScore, int level, int pointsToNextLevel, float pushTimer, float maxPushTimer)
 {
 	render->DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR);
-	render->RenderImage(SIGN_IMAGE, WINDOW_WIDTH - TILE_SIDE * BOARD_MAX_COLUMN_SIZE - 6, WINDOW_HEIGHT/5, 6, 790, 1);
-	render->RenderText("End Zone", FONT_LOCATION, 30, WINDOW_WIDTH - TILE_SIDE * BOARD_MAX_COLUMN_SIZE, 100, 1, false, { {255,255,255} });
+	render->RenderImage(ENDLINE_IMAGE, WINDOW_WIDTH - TILE_SIDE * BOARD_MAX_COLUMN_SIZE - WINDOW_WIDTH/ 150, WINDOW_HEIGHT/5, WINDOW_WIDTH / 150, WINDOW_HEIGHT, 1);
+	render->RenderText("End Zone", FONT_LOCATION, WINDOW_WIDTH/40, WINDOW_WIDTH - TILE_SIDE * BOARD_MAX_COLUMN_SIZE, WINDOW_HEIGHT / 8, 1, false, { {255,255,255} });
+
 	RenderBoardTiles();
 
-	render->RenderText("Score:" + std::to_string(score), FONT_LOCATION, 30, WINDOW_WIDTH*0.04f, 0, 1, false, { TEXT_COLOR });
+	render->RenderText("Score:" + std::to_string(score), FONT_LOCATION, WINDOW_HEIGHT / 30, UI_BARS_HEIGHT*1.4f, UI_BARS_HEIGHT * .2f, 1, false, { TEXT_COLOR });
+
+	render->RenderText("Level:" + std::to_string(level), FONT_LOCATION, WINDOW_HEIGHT / 30, SCORE_UI_POS_X - WINDOW_WIDTH/10, UI_BARS_HEIGHT*.2f, 1,false, { TEXT_COLOR });
 	render->DrawRectangle(SCORE_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH, UI_BARS_HEIGHT, DARK_GREEN_COLOR);
 	render->DrawRectangle(SCORE_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH *(float)levelScore / pointsToNextLevel, UI_BARS_HEIGHT, GREEN_COLOR);
 	
-	render->RenderText("Level:" + std::to_string(level), FONT_LOCATION, 30, SCORE_UI_POS_X - 140, 0, 1,false, { TEXT_COLOR });
-
+	render->RenderText("Push:", FONT_LOCATION, WINDOW_HEIGHT / 30, PUSH_UI_POS_X - WINDOW_WIDTH / 15, UI_BARS_HEIGHT * .2f, 1, false, { TEXT_COLOR });
 	render->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH, UI_BARS_HEIGHT, DARK_RED_COLOR);
 	render->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH * (float)pushTimer/maxPushTimer, UI_BARS_HEIGHT, RED_COLOR);
-	render->RenderText("Push:", FONT_LOCATION, 30, PUSH_UI_POS_X - UI_BARS_WIDTH, 0, 1, false, { TEXT_COLOR });
+
 
 	for (auto& button : buttons)
 	{
 		render->RenderImage(BUTTON_IMAGE, button.x, button.y, button.width, button.height, 1);
-		render->RenderText(button.text, FONT_LOCATION, button.height / 2, button.x + button.width / 2, button.y + button.height / 2 - 8, 1, true);
+		render->RenderText(button.text, FONT_LOCATION, button.width / 4, button.x + button.width / 2, button.y + button.height / 2.5f, 1, true);
 	}
 
 	render->UpdateRender();

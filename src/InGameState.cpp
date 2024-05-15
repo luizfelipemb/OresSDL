@@ -6,10 +6,10 @@ InGameState::InGameState(Game* game, std::shared_ptr<RenderWrapperBase> render)
 	boardLogic = std::make_shared<BoardLogic>();
 	gameRenderer = std::make_shared<InGameRenderer>(boardLogic, render);
 
-	Button pushButton = { WINDOW_WIDTH - 100, 
+	Button pushButton = { WINDOW_WIDTH/1.1f, 
 						WINDOW_HEIGHT - BOARD_INITIALCOLUMN_HEIGHT_POS + WINDOW_HEIGHT/40,
 						WINDOW_WIDTH / 20,
-						WINDOW_HEIGHT / 20,"<", [&]() { PushButtonClicked(); } };
+						WINDOW_HEIGHT / 20,"<push", [&]() { PushButtonClicked(); } };
 	buttons.push_back(pushButton);
 }
 

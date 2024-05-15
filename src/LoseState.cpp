@@ -1,9 +1,13 @@
 #include "LoseState.h"
 
+#define LOSE_TITLE "You Lose"
+#define AGAIN_BUTTON_WIDTH WINDOW_WIDTH/8
+#define AGAIN_BUTTON_X WINDOW_WIDTH/2 - AGAIN_BUTTON_WIDTH/2
+
 LoseState::LoseState(Game* game, std::shared_ptr<RenderWrapperBase> render) : game(game), render(render)
 {
 	loseRenderer = std::make_unique<LoseRenderer>(render);
-	Button againButton = { PLAY_BUTTON_X,WINDOW_HEIGHT / 1.5f,PLAY_BUTTON_WIDTH,WINDOW_HEIGHT / 10,"Again", [&]() { PlayAgain(); } };
+	Button againButton = { AGAIN_BUTTON_X,WINDOW_HEIGHT / 1.5f,AGAIN_BUTTON_WIDTH,WINDOW_HEIGHT / 10,"Again", [&]() { PlayAgain(); } };
 	buttons.push_back(againButton);
 }
 
