@@ -5,10 +5,17 @@ InGameState::InGameState(Game* game, std::shared_ptr<RenderWrapperBase> render)
 	this->game = game;
 	boardLogic = std::make_shared<BoardLogic>();
 	gameRenderer = std::make_shared<InGameRenderer>(boardLogic, render);
+
+	Button pushButton = { WINDOW_WIDTH - 100, 
+						WINDOW_HEIGHT - BOARD_INITIALCOLUMN_HEIGHT_POS + WINDOW_HEIGHT/40,
+						WINDOW_WIDTH / 20,
+						WINDOW_HEIGHT / 20,"<", [&]() { PushButtonClicked(); } };
+	buttons.push_back(pushButton);
 }
 
 void InGameState::OnEnter()
 {
+	boardLogic->ResetTotalBlocksBroke();
 	boardLogic->ResetBoard();
 	pushTimer = 0;
 	currentLevel = 1;
@@ -19,20 +26,9 @@ void InGameState::OnEnter()
 
 void InGameState::Update(float deltaTime)
 {
-	//push timer
-	pushTimer += deltaTime;
-	if (pushTimer >= PUSH_TIMER)
-	{
-		if (!boardLogic->TryAddNewColumn())
-		{
-			std::cout << "Game Over" << std::endl;
-			game->SetSaveData({score,currentLevel });
-			game->SwitchState(game->loseState);
-		}
-		pushTimer = 0;
-	}
+	PushTimer(deltaTime);
 
-	gameRenderer->UpdateRender(score,levelScore,currentLevel,pointsToNextLevel,pushTimer,PUSH_TIMER);
+	gameRenderer->UpdateRender(buttons,score,levelScore,currentLevel,pointsToNextLevel,pushTimer,PUSH_TIMER);
 }
 
 void InGameState::OnExit()
@@ -47,12 +43,49 @@ void InGameState::OnMouseLeftClick(int PosX, int PosY)
 	score = boardLogic->GetTotalBlocksBroke();
 	levelScore = boardLogic->GetBlocksBroke();
 
-	//check next level
-	if (levelScore >= pointsToNextLevel)
+	bool CanGoToNextLevel = levelScore >= pointsToNextLevel;
+	if (CanGoToNextLevel)
 	{
 		levelScore = 0;
 		currentLevel++;
 		pointsToNextLevel = std::ceil(pointsToNextLevel * NEXT_LEVEL_SCORE_MULTIPLY);
 		boardLogic->ResetBoard();
 	}
+
+	for (auto& button : buttons)
+	{
+		if (PosX >= button.x && PosX <= button.x + button.width &&
+			PosY >= button.y && PosY <= button.y + button.height)
+		{
+			button.OnClick();
+		}
+	}
+}
+
+void InGameState::PushButtonClicked()
+{
+	pushTimer = 0;
+	if (!boardLogic->TryAddNewColumn()) 
+	{
+		GameOver();
+	}
+}
+
+void InGameState::PushTimer(float deltaTime)
+{
+	pushTimer += deltaTime;
+	if (pushTimer >= PUSH_TIMER)
+	{
+		if (!boardLogic->TryAddNewColumn())
+		{
+			GameOver();
+		}
+		pushTimer = 0;
+	}
+}
+
+void InGameState::GameOver()
+{
+	game->SetSaveData({ score,currentLevel });
+	game->SwitchState(game->loseState);
 }

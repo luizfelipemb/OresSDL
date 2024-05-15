@@ -11,12 +11,12 @@
 // Board Settings
 #define TILE_SIDE 50
 #define BOARD_GAMESTART_COLUMNS 7
-#define BOARD_COLUMN_BLOCK_NUMBER  5 //10
+#define BOARD_COLUMN_BLOCK_NUMBER  10
 #define BOARD_INITIALCOLUMN_HEIGHT_POS 100
 #define BOARD_MAX_COLUMN_SIZE 16
 
 // Game Settings
-#define PUSH_TIMER 1
+#define PUSH_TIMER 10
 #define NEXT_LEVEL_SCORE 100
 #define NEXT_LEVEL_SCORE_MULTIPLY 1.6f
 
@@ -50,3 +50,6 @@
 
 //Font Settings
 #define FONT_LOCATION "assets/pixel.ttf"
+
+//Hacks
+#define HACK_BREAK_EVERY_BLOCK false

@@ -11,6 +11,7 @@ public:
 	const std::vector<std::vector<BlockTile>>& GetTiles() const { return tiles; };
 	const int GetBlocksBroke() const { return blocksBroke; };
 	const int GetTotalBlocksBroke() const { return totalBlocksBroke; };
+	const void ResetTotalBlocksBroke() { totalBlocksBroke = 0; };
 	void ResetBoard();
 private:
 	void BreakTileAtIndexIfColor(const int columnIndex, const int rowIndex, const Colors color);

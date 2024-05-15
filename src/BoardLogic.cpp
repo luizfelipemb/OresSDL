@@ -36,7 +36,7 @@ void BoardLogic::TryBreakTileAt(int PosX, int PosY)
 				else if (columnIndex + 1 < tiles.size() && tileColor == tiles[columnIndex + 1][rowIndex].GetColor())
 					hasSameColorNeighbor = true;
 
-				//if (hasSameColorNeighbor)
+				if (hasSameColorNeighbor || HACK_BREAK_EVERY_BLOCK)
 				{
 					tile.SetColor(Colors::Empty);
 					BreakTileAtIndexIfColor(columnIndex + 1, rowIndex, tileColor);

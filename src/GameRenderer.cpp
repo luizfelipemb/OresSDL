@@ -8,7 +8,7 @@ InGameRenderer::InGameRenderer(std::shared_ptr<BoardLogic> boardLogic, std::shar
 	this->render = render;
 }
 
-void InGameRenderer::UpdateRender(int score,int levelScore, int level, int pointsToNextLevel, float pushTimer, float maxPushTimer)
+void InGameRenderer::UpdateRender(std::vector<Button> buttons, int score,int levelScore, int level, int pointsToNextLevel, float pushTimer, float maxPushTimer)
 {
 	render->DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR);
 	render->RenderImage(SIGN_IMAGE, WINDOW_WIDTH - TILE_SIDE * BOARD_MAX_COLUMN_SIZE - 6, WINDOW_HEIGHT/5, 6, 790, 1);
@@ -24,6 +24,12 @@ void InGameRenderer::UpdateRender(int score,int levelScore, int level, int point
 	render->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH, UI_BARS_HEIGHT, DARK_RED_COLOR);
 	render->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH * (float)pushTimer/maxPushTimer, UI_BARS_HEIGHT, RED_COLOR);
 	render->RenderText("Push:", FONT_LOCATION, 30, PUSH_UI_POS_X - UI_BARS_WIDTH, 0, 1, false, { TEXT_COLOR });
+
+	for (auto& button : buttons)
+	{
+		render->RenderImage(BUTTON_IMAGE, button.x, button.y, button.width, button.height, 1);
+		render->RenderText(button.text, FONT_LOCATION, button.height / 2, button.x + button.width / 2, button.y + button.height / 2 - 8, 1, true);
+	}
 
 	render->UpdateRender();
 }
@@ -55,8 +61,8 @@ void InGameRenderer::RenderBoardTiles()
 				break;
 			}
 			render->RenderImage(TILE_GREY_IMAGE, tile.GetX(), tile.GetY(), TILE_SIDE, TILE_SIDE, 1, color);
-			render->RenderText(std::to_string(column_index) + "," + std::to_string(tile_index),
-				FONT_LOCATION, 15, tile.GetX(), tile.GetY(), 1, false, { {255,255,255} });
+			//render->RenderText(std::to_string(column_index) + "," + std::to_string(tile_index),
+			//FONT_LOCATION, 15, tile.GetX(), tile.GetY(), 1, false, { {255,255,255} });
 		}
 	}
 }

@@ -15,6 +15,9 @@ public:
 	void OnExit() override;
 	void OnMouseLeftClick(int PosX, int PosY) override;
 private:
+	void PushButtonClicked();
+	void GameOver();
+	void PushTimer(float deltaTime);
 	Game* game;
 	std::shared_ptr<BoardLogic> boardLogic;
 	std::shared_ptr<InGameRenderer> gameRenderer;
@@ -23,5 +26,6 @@ private:
 	int pointsToNextLevel = NEXT_LEVEL_SCORE;
 	int levelScore = 0;
 	int score = 0;
+	std::vector<Button> buttons;
 };
 
