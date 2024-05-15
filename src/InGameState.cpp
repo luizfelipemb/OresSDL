@@ -23,9 +23,11 @@ void InGameState::Update(float deltaTime)
 	pushTimer += deltaTime;
 	if (pushTimer >= PUSH_TIMER)
 	{
-		if (!boardLogic->TryAddNewColumn()) {
+		if (!boardLogic->TryAddNewColumn())
+		{
 			std::cout << "Game Over" << std::endl;
-			game->SwitchState(game->menuState);
+			game->SetSaveData({score,currentLevel });
+			game->SwitchState(game->loseState);
 		}
 		pushTimer = 0;
 	}

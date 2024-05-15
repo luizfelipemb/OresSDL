@@ -13,7 +13,7 @@ void LoseState::OnEnter()
 
 void LoseState::Update(float deltaTime)
 {
-	loseRenderer->UpdateRender(buttons);
+	loseRenderer->UpdateRender(buttons,game->GetSaveData());
 }
 void LoseState::OnMouseLeftClick(int PosX, int PosY)
 {

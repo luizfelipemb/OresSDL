@@ -19,4 +19,5 @@ private:
 	std::vector<std::vector<BlockTile>> tiles;
 	int blocksBroke = 0;
 	int totalBlocksBroke = 0;
+	int indexOfFirstColumnWithBlocks = 0;
 };

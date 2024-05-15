@@ -36,7 +36,7 @@ void BoardLogic::TryBreakTileAt(int PosX, int PosY)
 				else if (columnIndex + 1 < tiles.size() && tileColor == tiles[columnIndex + 1][rowIndex].GetColor())
 					hasSameColorNeighbor = true;
 
-				if (hasSameColorNeighbor)
+				//if (hasSameColorNeighbor)
 				{
 					tile.SetColor(Colors::Empty);
 					BreakTileAtIndexIfColor(columnIndex + 1, rowIndex, tileColor);
@@ -57,7 +57,7 @@ void BoardLogic::TryBreakTileAt(int PosX, int PosY)
 bool BoardLogic::TryAddNewColumn()
 {
 	//game over
-	if (tiles.size() >= BOARD_MAX_COLUMN_SIZE) {
+	if (tiles.size() >=  indexOfFirstColumnWithBlocks + BOARD_MAX_COLUMN_SIZE) {
 		return false;
 	}
 		
@@ -85,6 +85,7 @@ bool BoardLogic::TryAddNewColumn()
 void BoardLogic::ResetBoard()
 {
 	blocksBroke = 0;
+	indexOfFirstColumnWithBlocks = 0;
 	tiles.clear();
 	for (int columnIndex = 0; columnIndex < BOARD_GAMESTART_COLUMNS; ++columnIndex)
 	{
@@ -131,6 +132,9 @@ void BoardLogic::ReorganizeTiles()
 		}
 		if (isEntireColumnEmpty)
 		{
+			if (columnIndex == indexOfFirstColumnWithBlocks)
+				indexOfFirstColumnWithBlocks = columnIndex + 1;
+
 			for (size_t columnIndex2 = columnIndex; columnIndex2 > 0; --columnIndex2)
 			{
 				for (size_t rowIndex = 0; rowIndex < tiles[columnIndex].size(); ++rowIndex)

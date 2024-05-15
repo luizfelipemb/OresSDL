@@ -16,7 +16,7 @@
 #define BOARD_MAX_COLUMN_SIZE 16
 
 // Game Settings
-#define PUSH_TIMER 10
+#define PUSH_TIMER 1
 #define NEXT_LEVEL_SCORE 100
 #define NEXT_LEVEL_SCORE_MULTIPLY 1.6f
 
