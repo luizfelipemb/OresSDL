@@ -14,6 +14,8 @@ public:
 	const void ResetTotalBlocksBroke() { totalBlocksBroke = 0; };
 	void ResetBoard();
 private:
+	void TranslateTilesToLeft();
+	void CreateNewRow();
 	void BreakTileAtIndexIfColor(const int columnIndex, const int rowIndex, const Colors color);
 	void ReorganizeTiles();
 	Colors GetRandomColor();
