@@ -1,9 +1,9 @@
 #pragma once
 
 // Window Settings
-#define WINDOW_WIDTH 640*3
-#define WINDOW_HEIGHT 360*3
-#define WINDOW_TITLE "Ore Game by Luiz Felipe Bustamante"
+#define WINDOW_WIDTH 640*2
+#define WINDOW_HEIGHT 360*2
+#define WINDOW_TITLE "Ores Game by Luiz Felipe Bustamante"
 #define WINDOW_FULLSCREEN false
 #define WINDOW_FPS 60
 #define FRAME_TARGET_TIME (1000/WINDOW_FPS)

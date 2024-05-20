@@ -1,7 +1,7 @@
 #include "MenuRenderer.h"
 #include "Configs.h"
 
-#define MENU_TITLE "Ore Game"
+#define MENU_TITLE "Ores Game"
 #define MENU_SUBTITLE "by Luiz Felipe Bustamante"
 
 MenuRenderer::MenuRenderer(std::shared_ptr<RenderWrapperBase> render) : render(render)
