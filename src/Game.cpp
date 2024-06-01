@@ -34,6 +34,7 @@ void Game::update()
 
 void Game::render()
 {
+	renderer->clear();
 	currentState->render(renderer);
 	renderer->present();
 }

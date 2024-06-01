@@ -17,6 +17,8 @@ LoseState::LoseState(Game* game, RenderWrapperBase* renderer) : game(game), rend
 		"Again", BUTTON_IMAGE, FONT_LOCATION);
 	againButton.setOnClik([&]() { PlayAgain(); } );
 	buttons.push_back(againButton);
+
+	renderer->setBackGroundColor(BACKGROUND_COLOR);
 }
 
 void LoseState::OnEnter()
@@ -34,7 +36,6 @@ void LoseState::render(RenderWrapperBase* renderer)
 	int WINDOW_HEIGHT = renderer->getHeight();
 
 	auto saveData = game->getSaveData();
-	renderer->DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR);
 	renderer->RenderText(LOSE_TITLE, FONT_LOCATION, WINDOW_WIDTH / 10, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 10, 1, true, { TEXT_COLOR });
 	renderer->RenderText("Level:" + std::to_string(saveData.level), FONT_LOCATION, WINDOW_WIDTH / 25, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 3, 1, true, { TEXT_COLOR });
 	renderer->RenderText("Score:" + std::to_string(saveData.score), FONT_LOCATION, WINDOW_WIDTH / 25, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2.3, 1, true, { TEXT_COLOR });

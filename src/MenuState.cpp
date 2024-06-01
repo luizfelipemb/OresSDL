@@ -18,11 +18,11 @@ MenuState::MenuState(Game* game, RenderWrapperBase* renderer) : game(game), rend
 		"Play", BUTTON_IMAGE, FONT_LOCATION);
 	playButton.setOnClik([&]() { OnPlayButtonClick(); } );
 	buttons.push_back(playButton);
+	renderer->setBackGroundColor(BACKGROUND_COLOR);
 }
 
 void MenuState::OnEnter()
-{
-
+{	
 }
 
 void MenuState::update(float deltaTime)
@@ -34,7 +34,6 @@ void MenuState::render(RenderWrapperBase* renderer)
 {
 	int WINDOW_WIDTH = renderer->getWidth();
 	int WINDOW_HEIGHT = renderer->getHeight();
-	renderer->DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR);
 
 	renderer->RenderText(MENU_TITLE, FONT_LOCATION, WINDOW_WIDTH / 10, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 10, 1, true, { TEXT_COLOR });
 	renderer->RenderText(MENU_SUBTITLE, FONT_LOCATION, WINDOW_WIDTH / 25, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 5, 1, true, { TEXT_COLOR });

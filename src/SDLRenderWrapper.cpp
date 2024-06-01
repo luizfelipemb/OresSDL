@@ -25,8 +25,7 @@ SDLRenderWrapper::SDLRenderWrapper(const char* windowTitle, int windowWidth, int
 		flags
 	);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-	SDL_SetRenderDrawColor(renderer, backgroundColor.red, backgroundColor.green, backgroundColor.blue, SDL_ALPHA_OPAQUE);
-	SDL_RenderClear(renderer);
+	clear();
 }
 
 SDLRenderWrapper::~SDLRenderWrapper()
@@ -39,11 +38,8 @@ void SDLRenderWrapper::present()
 	SDL_RenderPresent(renderer);
 }
 
-bool SDLRenderWrapper::LoadTexture(std::string fileName)
+SDL_Texture* SDLRenderWrapper::LoadTexture(const std::string& fileName)
 {
-	if (textureMap.find(fileName) != textureMap.end())
-		return false;
-
 	SDL_Surface* tempSurf = IMG_Load(fileName.c_str());
 
 	if (tempSurf == 0)
@@ -59,16 +55,16 @@ bool SDLRenderWrapper::LoadTexture(std::string fileName)
 	if (texture != 0)
 	{
 		std::cout << "Texture loaded successfully... ('" << fileName.c_str() << "')" << std::endl;
-		textureMap[fileName] = texture;
-		return true;
+	}
+	else {
+		std::cout << "Could not create texture from surface!!! ('" << fileName.c_str() << "')" << std::endl;
 	}
 
-	std::cout << "Could not create texture from surface!!! ('" << fileName.c_str() << "')" << std::endl;
 
-	return false;
+	return texture;
 }
 
-void SDLRenderWrapper::RenderImage(std::string filename, int x, int y, int w, int h, double scale, std::optional<Color> color)
+void SDLRenderWrapper::RenderImage(const std::string& filename, int x, int y, int w, int h, double scale, std::optional<Color> color)
 {
 	SDL_Rect destRect;
 	destRect.x = x;
@@ -77,28 +73,32 @@ void SDLRenderWrapper::RenderImage(std::string filename, int x, int y, int w, in
 	destRect.h = h * scale;
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 
-	if (textureMap.find(filename) == textureMap.end())
-		LoadTexture(filename);
+	auto texture = getTexture(filename);
 
 	if (color.has_value()) {
-		SDL_SetTextureColorMod(textureMap[filename], color->red, color->green, color->blue);
+		SDL_SetTextureColorMod(texture, color->red, color->green, color->blue);
 	}
 
-	if (SDL_RenderCopyEx(renderer, textureMap[filename], NULL, &destRect, 0, NULL, flip) != 0)
+	if (SDL_RenderCopyEx(renderer, texture, NULL, &destRect, 0, NULL, flip) != 0)
 		std::cout << SDL_GetError() << std::endl;
 
 	if (color.has_value()) {
-		SDL_SetTextureColorMod(textureMap[filename], 255, 255, 255);
+		SDL_SetTextureColorMod(texture, 255, 255, 255);
 	}
 }
 
-void SDLRenderWrapper::ClearFromTextureMap(std::string filename)
+void SDLRenderWrapper::ClearFromTextureMap(const std::string& filename)
 {
+	SDL_DestroyTexture(textureMap[filename]);
 	textureMap.erase(filename);
 }
 
 void SDLRenderWrapper::ClearAllTextures()
 {
+	for (auto& [name, tex] : textureMap)
+	{
+		SDL_DestroyTexture(tex);
+	}
 	textureMap.clear();
 }
 
@@ -157,7 +157,7 @@ void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fo
 }
 
 
-void SDLRenderWrapper::DrawRectangle(int x, int y, float width, float height, Color color) {
+void SDLRenderWrapper::DrawRectangle(int x, int y, float width, float height, const Color& color) {
 	// Set render color
 	SDL_SetRenderDrawColor(renderer, color.red, color.green, color.blue, SDL_ALPHA_OPAQUE);
 
@@ -168,9 +168,15 @@ void SDLRenderWrapper::DrawRectangle(int x, int y, float width, float height, Co
 	SDL_RenderFillRect(renderer, &rect);
 }
 
-void SDLRenderWrapper::setBackGroundColor(Color color)
+void SDLRenderWrapper::setBackGroundColor(const Color& color)
 {
 	backgroundColor = color;
+}
+
+void SDLRenderWrapper::clear() const
+{
+	SDL_SetRenderDrawColor(renderer, backgroundColor.red, backgroundColor.green, backgroundColor.blue, SDL_ALPHA_OPAQUE);
+	SDL_RenderClear(renderer);
 }
 
 int SDLRenderWrapper::getWidth() const
@@ -185,4 +191,16 @@ int SDLRenderWrapper::getHeight() const
 	int w, h;
 	SDL_GetWindowSize(window, &w, &h);
 	return h;
+}
+
+SDL_Texture* SDLRenderWrapper::getTexture(std::string filename)
+{
+	auto result = textureMap.find(filename);
+	if (result == textureMap.end())
+	{
+		auto texutre = LoadTexture(filename);
+		textureMap[filename] = texutre;
+		return texutre;
+	}
+	return result->second;
 }

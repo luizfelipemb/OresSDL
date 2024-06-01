@@ -13,6 +13,8 @@ InGameState::InGameState(Game* game, RenderWrapperBase* renderer)
 		"<push", BUTTON_IMAGE, FONT_LOCATION);
 	pushButton.setOnClik([&]() { PushButtonClicked(); });
 	buttons.push_back(pushButton);
+
+	renderer->setBackGroundColor(BACKGROUND_COLOR);
 }
 
 void InGameState::OnEnter()
@@ -43,7 +45,6 @@ void InGameState::render(RenderWrapperBase* renderer)
 	int PUSH_UI_POS_X = WINDOW_WIDTH / 1.2f;
 	int SCORE_UI_POS_X = WINDOW_WIDTH / 2;
 
-	renderer->DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR);
 	renderer->RenderImage(ENDLINE_IMAGE, WINDOW_WIDTH - TILE_SIDE * BOARD_MAX_COLUMN_SIZE - WINDOW_WIDTH / 150, WINDOW_HEIGHT / 5, WINDOW_WIDTH / 150, WINDOW_HEIGHT, 1);
 	renderer->RenderText("End Zone", FONT_LOCATION, WINDOW_WIDTH / 40, WINDOW_WIDTH - TILE_SIDE * BOARD_MAX_COLUMN_SIZE, WINDOW_HEIGHT / 8, 1, false, { {255,255,255} });
 
