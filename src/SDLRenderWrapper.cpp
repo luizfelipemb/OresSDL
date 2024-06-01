@@ -30,6 +30,9 @@ SDLRenderWrapper::SDLRenderWrapper(const char* windowTitle, int windowWidth, int
 
 SDLRenderWrapper::~SDLRenderWrapper()
 {
+	ClearAllTextures();
+	SDL_DestroyWindow(window);
+	SDL_DestroyRenderer(renderer);
 	TTF_Quit();
 }
 
