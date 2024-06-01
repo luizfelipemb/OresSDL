@@ -25,6 +25,8 @@ SDLRenderWrapper::SDLRenderWrapper(const char* windowTitle, int windowWidth, int
 		flags
 	);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_MUL);
+
 	clear();
 }
 
@@ -115,9 +117,9 @@ void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fo
 	}
 
 	// Render text
-	SDL_Color textColor = { 0, 0, 0 }; // Default color (black)
+	SDL_Color textColor = { 0, 0, 0, 255 }; // Default color (black)
 	if (color.has_value()) {
-		textColor = SDL_Color{ color->red, color->green, color->blue };
+		textColor = SDL_Color{ color->red, color->green, color->blue, 255 };
 	}
 	SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), textColor);
 	if (!surface) {
@@ -160,9 +162,9 @@ void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fo
 }
 
 
-void SDLRenderWrapper::DrawRectangle(int x, int y, float width, float height, const Color& color) {
+void SDLRenderWrapper::DrawRectangle(int x, int y, float width, float height, const Color& color, unsigned char alpha) {
 	// Set render color
-	SDL_SetRenderDrawColor(renderer, color.red, color.green, color.blue, SDL_ALPHA_OPAQUE);
+	SDL_SetRenderDrawColor(renderer, color.red, color.green, color.blue, alpha);
 
 	// Define rectangle
 	SDL_Rect rect = { x, y, width, height };

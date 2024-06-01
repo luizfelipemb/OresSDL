@@ -73,11 +73,11 @@ void InGameState::render(RenderWrapperBase* renderer)
 	renderer->RenderText("Score:" + std::to_string(score), FONT_LOCATION, WINDOW_HEIGHT / 30, UI_BARS_HEIGHT * 1.4f, UI_BARS_HEIGHT * .2f, 1, false, { TEXT_COLOR });
 
 	renderer->RenderText("Level:" + std::to_string(currentLevel), FONT_LOCATION, WINDOW_HEIGHT / 30, SCORE_UI_POS_X - WINDOW_WIDTH / 10, UI_BARS_HEIGHT * .2f, 1, false, { TEXT_COLOR });
-	renderer->DrawRectangle(SCORE_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH, UI_BARS_HEIGHT, DARK_GREEN_COLOR);
+	renderer->DrawRectangle(SCORE_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH, UI_BARS_HEIGHT, GREEN_COLOR, 10);
 	renderer->DrawRectangle(SCORE_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH * (float)levelScore / pointsToNextLevel, UI_BARS_HEIGHT, GREEN_COLOR);
 
 	renderer->RenderText("Push:", FONT_LOCATION, WINDOW_HEIGHT / 30, PUSH_UI_POS_X - WINDOW_WIDTH / 15, UI_BARS_HEIGHT * .2f, 1, false, { TEXT_COLOR });
-	renderer->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH, UI_BARS_HEIGHT, DARK_RED_COLOR);
+	renderer->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH, UI_BARS_HEIGHT, RED_COLOR, 10);
 	renderer->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH * (float)pushTimer / PUSH_TIMER, UI_BARS_HEIGHT, RED_COLOR);
 
 

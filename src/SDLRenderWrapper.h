@@ -16,7 +16,7 @@ public:
 	void ClearFromTextureMap(const std::string& filename) override;
 	void ClearAllTextures() override;
 	void RenderText(const std::string& text, const std::string& fontFile, int fontSize, int x, int y, double scale = 1, bool centered = 0, std::optional<Color> color = std::nullopt) override;
-	void DrawRectangle(int x, int y, float width, float height, const Color& color) override;
+	void DrawRectangle(int x, int y, float width, float height, const Color& color, unsigned char alpha = 255) override;
 	void setBackGroundColor(const Color& color) override;
 	void clear() const override;
 

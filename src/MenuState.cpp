@@ -1,6 +1,7 @@
 #include "MenuState.h"
 
 #include "InGameState.h"
+#include "TransitionState.h"
 
 #define MENU_TITLE "Ores Game"
 #define MENU_SUBTITLE "by Luiz Felipe Bustamante"
@@ -58,5 +59,5 @@ void MenuState::OnMouseLeftClick(int PosX, int PosY)
 
 void MenuState::OnPlayButtonClick()
 {
-	game->switchState(std::make_shared<InGameState>(game, game->getRender()));
+	game->switchState(std::make_shared<TransitionState>(game, game->getCurrentState(), std::make_shared<InGameState>(game, game->getRender()), 0.5f));
 }

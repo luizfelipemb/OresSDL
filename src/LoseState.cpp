@@ -1,6 +1,7 @@
 #include "LoseState.h"
 
 #include "InGameState.h"
+#include "TransitionState.h"
 
 #define LOSE_TITLE "You Lose"
 
@@ -62,5 +63,5 @@ void LoseState::OnExit()
 void LoseState::PlayAgain()
 {
 	std::cout << "Play Again" << std::endl;
-	game->switchState(std::make_shared<InGameState>(game, game->getRender()));
+	game->switchState(std::make_shared<TransitionState>(game, game->getCurrentState(), std::make_shared<InGameState>(game, game->getRender()), 0.5f));
 }
