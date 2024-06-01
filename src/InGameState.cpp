@@ -111,5 +111,5 @@ void InGameState::PushButtonClicked()
 void InGameState::GameOver()
 {
 	game->setSaveData({ score,currentLevel });
-	game->switchState(std::make_unique<LoseState>(game, game->getRender()));
+	game->switchState(std::make_shared<LoseState>(game, game->getRender()));
 }

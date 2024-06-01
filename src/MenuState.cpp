@@ -58,5 +58,5 @@ void MenuState::OnMouseLeftClick(int PosX, int PosY)
 
 void MenuState::OnPlayButtonClick()
 {
-	game->switchState(std::make_unique<InGameState>(game, game->getRender()));
+	game->switchState(std::make_shared<InGameState>(game, game->getRender()));
 }

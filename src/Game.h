@@ -21,7 +21,7 @@ public:
 
 	void render();
 
-	void switchState(std::unique_ptr<GameStateBase> newState);
+	void switchState(std::shared_ptr<GameStateBase> newState);
 
 	const SaveData getSaveData() const { return saveData; };
 
@@ -31,7 +31,7 @@ public:
 
 	RenderWrapperBase* getRender() const { return renderer; };
 
-	GameStateBase* getCurrentState() const { return currentState.get(); };
+	std::shared_ptr<GameStateBase> getCurrentState() const { return currentState; };
 private:
 	void stop() override;
 
@@ -40,7 +40,7 @@ private:
 	SaveData saveData = { 0,0 };
 	bool running = true;
 
-	std::unique_ptr<GameStateBase> currentState;
+	std::shared_ptr<GameStateBase> currentState;
 	RenderWrapperBase* renderer;
 	InputHandler inputHandle;
 };

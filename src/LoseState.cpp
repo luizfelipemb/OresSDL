@@ -62,5 +62,5 @@ void LoseState::OnExit()
 void LoseState::PlayAgain()
 {
 	std::cout << "Play Again" << std::endl;
-	game->switchState(std::make_unique<InGameState>(game, game->getRender()));
+	game->switchState(std::make_shared<InGameState>(game, game->getRender()));
 }

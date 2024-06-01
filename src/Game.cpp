@@ -44,7 +44,7 @@ void Game::stop()
 	running = false;
 }
 
-void Game::switchState(std::unique_ptr<GameStateBase> newState)
+void Game::switchState(std::shared_ptr<GameStateBase> newState)
 {
 	inputHandle.RemoveObserver(currentState.get());
 	if(currentState)
