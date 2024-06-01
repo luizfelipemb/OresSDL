@@ -380,7 +380,7 @@ typedef struct SDL_VirtualJoystickDesc
     const char *name;   /**< the name of the joystick */
 
     void *userdata;     /**< User data pointer passed to callbacks */
-    void (SDLCALL *Update)(void *userdata); /**< Called when the joystick state should be updated */
+    void (SDLCALL *update)(void *userdata); /**< Called when the joystick state should be updated */
     void (SDLCALL *SetPlayerIndex)(void *userdata, int player_index); /**< Called when the player index is set */
     int (SDLCALL *Rumble)(void *userdata, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble); /**< Implements SDL_JoystickRumble() */
     int (SDLCALL *RumbleTriggers)(void *userdata, Uint16 left_rumble, Uint16 right_rumble); /**< Implements SDL_JoystickRumbleTriggers() */

@@ -5,13 +5,15 @@
 #include "GameRenderer.h"
 #include "Configs.h"
 #include "Game.h"
+
 class Game;
+
 class InGameState : public GameStateBase
 {
 public:
-	InGameState(Game* game, std::shared_ptr<RenderWrapperBase> render);
+	InGameState(Game* game, RenderWrapperBase* renderer);
 	void OnEnter() override;
-	void Update(float deltaTime) override;
+	void update(float deltaTime) override;
 	void OnExit() override;
 	void OnMouseLeftClick(int PosX, int PosY) override;
 private:

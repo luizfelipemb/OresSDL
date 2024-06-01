@@ -1,13 +1,20 @@
 #include "MenuState.h"
 
-#define PLAY_BUTTON_WIDTH WINDOW_WIDTH/8
-#define PLAY_BUTTON_X WINDOW_WIDTH/2 - PLAY_BUTTON_WIDTH/2
+#include "InGameState.h"
 
-MenuState::MenuState(Game* game, std::shared_ptr<RenderWrapperBase> render) : game(game), render(render)
+MenuState::MenuState(Game* game, RenderWrapperBase* renderer) : game(game), renderer(renderer)
 {
-	menuRenderer = std::make_shared<MenuRenderer>(render);
+	menuRenderer = std::make_shared<MenuRenderer>(renderer);
 
-	Button playButton = { PLAY_BUTTON_X,WINDOW_HEIGHT / 2,PLAY_BUTTON_WIDTH,WINDOW_HEIGHT/10,"Play", [&]() { OnPlayButtonClick(); } };
+	int PLAY_BUTTON_WIDTH = renderer->getWidth() / 8;
+	int PLAY_BUTTON_X = renderer->getWidth() / 2 - PLAY_BUTTON_WIDTH / 2;
+
+	Button playButton = {
+		PLAY_BUTTON_X,
+		renderer->getHeight() / 2,
+		PLAY_BUTTON_WIDTH,
+		renderer->getHeight() / 10,
+		"Play", [&]() { OnPlayButtonClick(); } };
 	buttons.push_back(playButton);
 }
 
@@ -15,9 +22,9 @@ void MenuState::OnEnter()
 {
 }
 
-void MenuState::Update(float deltaTime)
+void MenuState::update(float deltaTime)
 {
-	menuRenderer->UpdateRender(buttons);
+	menuRenderer->render(buttons);
 }
 
 void MenuState::OnExit()
@@ -38,5 +45,5 @@ void MenuState::OnMouseLeftClick(int PosX, int PosY)
 
 void MenuState::OnPlayButtonClick()
 {
-	game->SwitchState(game->inGameState);
+	game->switchState(std::make_unique<InGameState>(game, game->getRender()));
 }

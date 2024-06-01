@@ -1,48 +1,53 @@
 #include "Game.h"
+
 #include "Configs.h"
+
 #include "SDL.h"
 #include <iostream>
-#include "SDLRenderWrapper.h"
 
-Game::Game()
+Game::Game(RenderWrapperBase* renderer)
+	: renderer(renderer)
 {
-	last_frame_time = 0;
-	render = std::make_shared<SDLRenderWrapper>(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_FULLSCREEN);
-	inputHandle = std::make_shared<InputHandler>();
+	lastFrameTime = 0;
 
-	inGameState = std::make_shared<InGameState>(std::move(this), render);
-	menuState = std::make_shared<MenuState>(std::move(this), render);
-	loseState = std::make_shared<LoseState>(std::move(this), render);
-
-	inputHandle->RegisterObserver(this);
-	SwitchState(menuState);
+	inputHandle.RegisterObserver(this);
 }
 
-void Game::Update()
+bool Game::processEvents()
+{
+	inputHandle.HandleEvents();
+	return running;
+}
+
+void Game::update()
 {
 	// Calculate delta time
 	Uint32 currentTicks = SDL_GetTicks();
-	float deltaTime = (currentTicks - last_frame_time) / 1000.0f; // Convert milliseconds to seconds
-	last_frame_time = currentTicks;
+	float deltaTime = (currentTicks - lastFrameTime) / 1000.0f; // Convert milliseconds to seconds
+	lastFrameTime = currentTicks;
 
-	inputHandle->HandleEvents();
-	currentState->Update(deltaTime);
-	render->UpdateRender();
+	currentState->update(deltaTime);
 	
-	while (!SDL_TICKS_PASSED(SDL_GetTicks(), last_frame_time + FRAME_TARGET_TIME));
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), lastFrameTime + FRAME_TARGET_TIME));
 }
 
-void Game::OnQuitWindowClick()
+void Game::render()
 {
-	Running = false;
+	// Draw current layer
+	renderer->present();
 }
 
-void Game::SwitchState(std::shared_ptr<GameStateBase> newState)
+void Game::stop()
 {
-	inputHandle->RemoveObserver(currentState.get());
+	running = false;
+}
+
+void Game::switchState(std::unique_ptr<GameStateBase> newState)
+{
+	inputHandle.RemoveObserver(currentState.get());
 	if(currentState)
 		currentState->OnExit();
-	inputHandle->RegisterObserver(newState.get());
-	currentState = newState;
+	inputHandle.RegisterObserver(newState.get());
+	currentState = std::move(newState);
 	currentState->OnEnter();
 }

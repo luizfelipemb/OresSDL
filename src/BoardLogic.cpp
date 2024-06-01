@@ -3,7 +3,8 @@
 #include <iostream>
 #include <random>
 
-BoardLogic::BoardLogic()
+BoardLogic::BoardLogic(int width, int height)
+	: width(width), height(height), tileSide(height / 15), boardInitialColumnHeightPos(height / 10)
 {
 	ResetBoard();
 }
@@ -57,10 +58,10 @@ void BoardLogic::TryBreakTileAt(int PosX, int PosY)
 bool BoardLogic::TryAddNewColumn()
 {
 	//game over
-	if (tiles.size() >=  indexOfFirstColumnWithBlocks + BOARD_MAX_COLUMN_SIZE) {
+	if (tiles.size() >= indexOfFirstColumnWithBlocks + BOARD_MAX_COLUMN_SIZE) {
 		return false;
 	}
-		
+
 	TranslateTilesToLeft();
 	CreateNewRow();
 
@@ -74,7 +75,7 @@ void BoardLogic::TranslateTilesToLeft()
 		for (size_t rowIndex = 0; rowIndex < tiles[columnIndex].size(); ++rowIndex)
 		{
 			BlockTile& tile = tiles[columnIndex][rowIndex];
-			tile.TranslateX(-TILE_SIDE);
+			tile.TranslateX(-tileSide);
 		}
 	}
 }
@@ -84,9 +85,9 @@ void BoardLogic::CreateNewRow()
 	tiles.emplace_back();
 	for (int rowIndex = 0; rowIndex < BOARD_COLUMN_BLOCK_NUMBER; ++rowIndex)
 	{
-		int xPos = WINDOW_WIDTH - TILE_SIDE;
-		int yPos = WINDOW_HEIGHT - BOARD_INITIALCOLUMN_HEIGHT_POS - TILE_SIDE - rowIndex * TILE_SIDE;
-		tiles[tiles.size() - 1].emplace_back(xPos, yPos, TILE_SIDE, GetRandomColor());
+		int xPos = width - tileSide;
+		int yPos = height - boardInitialColumnHeightPos - tileSide - rowIndex * tileSide;
+		tiles[tiles.size() - 1].emplace_back(xPos, yPos, tileSide, GetRandomColor());
 	}
 }
 
@@ -100,9 +101,9 @@ void BoardLogic::ResetBoard()
 		tiles.emplace_back();
 		for (int rowIndex = 0; rowIndex < BOARD_COLUMN_BLOCK_NUMBER; ++rowIndex)
 		{
-			int xPos = WINDOW_WIDTH - ((BOARD_GAMESTART_COLUMNS - columnIndex) * TILE_SIDE);
-			int yPos = WINDOW_HEIGHT - BOARD_INITIALCOLUMN_HEIGHT_POS - TILE_SIDE - rowIndex * TILE_SIDE;
-			tiles[columnIndex].emplace_back(xPos, yPos, TILE_SIDE, GetRandomColor());
+			int xPos = width - ((BOARD_GAMESTART_COLUMNS - columnIndex) * tileSide);
+			int yPos = height - boardInitialColumnHeightPos - tileSide - rowIndex * tileSide;
+			tiles[columnIndex].emplace_back(xPos, yPos, tileSide, GetRandomColor());
 		}
 	}
 }
@@ -113,7 +114,7 @@ void BoardLogic::BreakTileAtIndexIfColor(const int columnIndex, const int rowInd
 		return;
 
 	BlockTile& tile = tiles[columnIndex][rowIndex];
-	if (tile.GetColor() == color) 
+	if (tile.GetColor() == color)
 	{
 		tile.SetColor(Colors::Empty);
 		blocksBroke++;
@@ -148,7 +149,7 @@ void BoardLogic::ReorganizeTiles()
 				for (size_t rowIndex = 0; rowIndex < tiles[columnIndex].size(); ++rowIndex)
 				{
 					Colors temp = tiles[columnIndex2][rowIndex].GetColor();
-					tiles[columnIndex2][rowIndex].SetColor(tiles[columnIndex2-1][rowIndex].GetColor());
+					tiles[columnIndex2][rowIndex].SetColor(tiles[columnIndex2 - 1][rowIndex].GetColor());
 					tiles[columnIndex2 - 1][rowIndex].SetColor(temp);
 				}
 			}

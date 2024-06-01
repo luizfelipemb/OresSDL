@@ -11,7 +11,7 @@ void InputHandler::HandleEvents()
 		for (InputObserver* observer : observers)
 		{
 			std::cout << "Quit Input" << std::endl;
-			observer->OnQuitWindowClick();
+			observer->stop();
 		}
 		break;
 	case SDL_MOUSEBUTTONDOWN:

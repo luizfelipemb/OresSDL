@@ -1,13 +1,17 @@
 #include "LoseState.h"
 
-#define LOSE_TITLE "You Lose"
-#define AGAIN_BUTTON_WIDTH WINDOW_WIDTH/8
-#define AGAIN_BUTTON_X WINDOW_WIDTH/2 - AGAIN_BUTTON_WIDTH/2
+#include "InGameState.h"
 
-LoseState::LoseState(Game* game, std::shared_ptr<RenderWrapperBase> render) : game(game), render(render)
+#define LOSE_TITLE "You Lose"
+
+
+LoseState::LoseState(Game* game, RenderWrapperBase* renderer) : game(game), renderer(renderer)
 {
-	loseRenderer = std::make_unique<LoseRenderer>(render);
-	Button againButton = { AGAIN_BUTTON_X,WINDOW_HEIGHT / 1.5f,AGAIN_BUTTON_WIDTH,WINDOW_HEIGHT / 10,"Again", [&]() { PlayAgain(); } };
+	int AGAIN_BUTTON_WIDTH = renderer->getWidth() / 8;
+	int AGAIN_BUTTON_X = renderer->getWidth() / 2 - AGAIN_BUTTON_WIDTH / 2;
+
+	loseRenderer = std::make_unique<LoseRenderer>(renderer);
+	Button againButton = { AGAIN_BUTTON_X,renderer->getHeight() / 1.5f,AGAIN_BUTTON_WIDTH,renderer->getHeight() / 10,"Again", [&]() { PlayAgain(); } };
 	buttons.push_back(againButton);
 }
 
@@ -15,9 +19,9 @@ void LoseState::OnEnter()
 {
 }
 
-void LoseState::Update(float deltaTime)
+void LoseState::update(float deltaTime)
 {
-	loseRenderer->UpdateRender(buttons,game->GetSaveData());
+	loseRenderer->render(buttons, game->getSaveData());
 }
 void LoseState::OnMouseLeftClick(int PosX, int PosY)
 {
@@ -38,5 +42,5 @@ void LoseState::OnExit()
 void LoseState::PlayAgain()
 {
 	std::cout << "Play Again" << std::endl;
-	game->SwitchState(game->inGameState);
+	game->switchState(std::make_unique<InGameState>(game, game->getRender()));
 }

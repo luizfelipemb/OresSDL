@@ -34,7 +34,7 @@ SDLRenderWrapper::~SDLRenderWrapper()
 	TTF_Quit();
 }
 
-void SDLRenderWrapper::UpdateRender()
+void SDLRenderWrapper::present()
 {
 	SDL_RenderPresent(renderer);
 }
@@ -166,4 +166,18 @@ void SDLRenderWrapper::DrawRectangle(int x, int y, float width, float height, Co
 
 	// Draw rectangle
 	SDL_RenderFillRect(renderer, &rect);
+}
+
+int SDLRenderWrapper::getWidth() const
+{
+	int w, h;
+	SDL_GetWindowSize(window, &w, &h);
+	return w;
+}
+
+int SDLRenderWrapper::getHeight() const
+{
+	int w, h;
+	SDL_GetWindowSize(window, &w, &h);
+	return h;
 }

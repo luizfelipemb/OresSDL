@@ -1,15 +1,17 @@
 #include "InGameState.h"
 
-InGameState::InGameState(Game* game, std::shared_ptr<RenderWrapperBase> render)
+#include "LoseState.h"
+
+InGameState::InGameState(Game* game, RenderWrapperBase* renderer)
 {
 	this->game = game;
-	boardLogic = std::make_shared<BoardLogic>();
-	gameRenderer = std::make_shared<InGameRenderer>(boardLogic, render);
+	boardLogic = std::make_shared<BoardLogic>(renderer->getWidth(), renderer->getHeight());
+	gameRenderer = std::make_shared<InGameRenderer>(boardLogic, renderer);
 
-	Button pushButton = { WINDOW_WIDTH/1.1f, 
-						WINDOW_HEIGHT - BOARD_INITIALCOLUMN_HEIGHT_POS + WINDOW_HEIGHT/40,
-						WINDOW_WIDTH / 20,
-						WINDOW_HEIGHT / 20,"<push", [&]() { PushButtonClicked(); } };
+	Button pushButton = { renderer->getWidth()/1.1f,
+						renderer->getHeight() - boardLogic->getBoardInitialColumnHeightPos() + renderer->getHeight() /40,
+						renderer->getWidth() / 20,
+						renderer->getHeight() / 20,"<push", [&]() { PushButtonClicked(); } };
 	buttons.push_back(pushButton);
 }
 
@@ -24,11 +26,11 @@ void InGameState::OnEnter()
 	levelScore = 0;
 }
 
-void InGameState::Update(float deltaTime)
+void InGameState::update(float deltaTime)
 {
 	PushTimer(deltaTime);
 
-	gameRenderer->UpdateRender(buttons,score,levelScore,currentLevel,pointsToNextLevel,pushTimer,PUSH_TIMER);
+	gameRenderer->render(buttons,score,levelScore,currentLevel,pointsToNextLevel,pushTimer,PUSH_TIMER);
 }
 
 void InGameState::OnExit()
@@ -86,6 +88,6 @@ void InGameState::PushTimer(float deltaTime)
 
 void InGameState::GameOver()
 {
-	game->SetSaveData({ score,currentLevel });
-	game->SwitchState(game->loseState);
+	game->setSaveData({ score,currentLevel });
+	game->switchState(std::make_unique<LoseState>(game, game->getRender()));
 }

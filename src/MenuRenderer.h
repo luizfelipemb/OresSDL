@@ -7,8 +7,10 @@
 class MenuRenderer
 {
 public:
-	MenuRenderer(std::shared_ptr<RenderWrapperBase> render);
-	void UpdateRender(std::vector<Button> buttons);
-	std::shared_ptr<RenderWrapperBase> render;
+	MenuRenderer(RenderWrapperBase* renderer);
+	void render(std::vector<Button> buttons);
+
+private:
+	RenderWrapperBase* renderer;
 };
 

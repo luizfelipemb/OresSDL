@@ -5,7 +5,7 @@
 class BoardLogic
 {
 public:
-	BoardLogic();
+	BoardLogic(int width, int height);
 	void TryBreakTileAt(int PosX, int PosY);
 	bool TryAddNewColumn();
 	const std::vector<std::vector<BlockTile>>& GetTiles() const { return tiles; };
@@ -13,6 +13,9 @@ public:
 	const int GetTotalBlocksBroke() const { return totalBlocksBroke; };
 	const void ResetTotalBlocksBroke() { totalBlocksBroke = 0; };
 	void ResetBoard();
+
+	int getBoardInitialColumnHeightPos() const { return boardInitialColumnHeightPos; }
+	int getTileSide() const { return tileSide; }
 private:
 	void TranslateTilesToLeft();
 	void CreateNewRow();
@@ -23,4 +26,8 @@ private:
 	int blocksBroke = 0;
 	int totalBlocksBroke = 0;
 	int indexOfFirstColumnWithBlocks = 0;
+	int width;
+	int height;
+	int tileSide;
+	int boardInitialColumnHeightPos;
 };

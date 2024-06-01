@@ -1,18 +1,14 @@
 #pragma once
 
 // Window Settings
-#define WINDOW_WIDTH 640*2
-#define WINDOW_HEIGHT 360*2
-#define WINDOW_TITLE "Ores Game by Luiz Felipe Bustamante"
+
 #define WINDOW_FULLSCREEN false
 #define WINDOW_FPS 60
 #define FRAME_TARGET_TIME (1000/WINDOW_FPS)
 
 // Board Settings
-#define TILE_SIDE WINDOW_HEIGHT/15
 #define BOARD_GAMESTART_COLUMNS 7
 #define BOARD_COLUMN_BLOCK_NUMBER  10
-#define BOARD_INITIALCOLUMN_HEIGHT_POS WINDOW_HEIGHT/10
 #define BOARD_MAX_COLUMN_SIZE 16
 
 // Game Settings

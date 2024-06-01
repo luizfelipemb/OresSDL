@@ -1,12 +1,10 @@
 #pragma once
 #include "GameRenderer.h"
-#include <memory>
 #include "InputHandle.h"
 #include "GameStateBase.h"
-#include "InGameState.h"
-#include "MenuState.h"
-#include "LoseState.h"
 #include "SaveData.h"
+
+#include <memory>
 
 class InGameState;
 class MenuState;
@@ -15,23 +13,33 @@ class LoseState;
 class Game : public InputObserver
 {
 public:
-	Game();
-	void Update();
-	void SwitchState(std::shared_ptr<GameStateBase> newState);
-	const SaveData GetSaveData() const { return saveData; };
-	const void SetSaveData(SaveData save) { saveData = save; };
+	Game(RenderWrapperBase* renderer);
 
-	bool Running = true;
-	std::shared_ptr<InGameState> inGameState;
-	std::shared_ptr<MenuState> menuState;
-	std::shared_ptr<LoseState> loseState;
+	bool processEvents();
+
+	void update();
+
+	void render();
+
+	void switchState(std::unique_ptr<GameStateBase> newState);
+
+	const SaveData getSaveData() const { return saveData; };
+
+	const void setSaveData(SaveData save) { saveData = save; };
+
+	bool isRunning() const { return running; };
+
+	RenderWrapperBase* getRender() const { return renderer; };
+private:
+	void stop() override;
 
 private:
-	void OnQuitWindowClick() override;
-	int last_frame_time;
+	float lastFrameTime;
 	SaveData saveData = { 0,0 };
-	std::shared_ptr<GameStateBase> currentState;
-	std::shared_ptr<RenderWrapperBase> render;
-	std::shared_ptr<InputHandler> inputHandle;
+	bool running = true;
+
+	std::unique_ptr<GameStateBase> currentState;
+	RenderWrapperBase* renderer;
+	InputHandler inputHandle;
 };
 
