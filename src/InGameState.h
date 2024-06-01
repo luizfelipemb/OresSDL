@@ -20,7 +20,6 @@ public:
 private:
 	void PushButtonClicked();
 	void GameOver();
-	void PushTimer(float deltaTime);
 	Game* game;
 	BoardLogic boardLogic;
 	float pushTimer = 0;

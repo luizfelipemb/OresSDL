@@ -19,8 +19,7 @@ InGameState::InGameState(Game* game, RenderWrapperBase* renderer)
 
 void InGameState::OnEnter()
 {
-	boardLogic.ResetTotalBlocksBroke();
-	boardLogic.ResetBoard();
+	boardLogic = BoardLogic(game->getRender()->getWidth(), game->getRender()->getHeight());
 	pushTimer = 0;
 	currentLevel = 1;
 	pointsToNextLevel = NEXT_LEVEL_SCORE;
@@ -30,7 +29,28 @@ void InGameState::OnEnter()
 
 void InGameState::update(float deltaTime)
 {
-	PushTimer(deltaTime);
+	pushTimer += deltaTime;
+
+	score = boardLogic.GetTotalBlocksBroke();
+	levelScore = boardLogic.GetBlocksBroke();
+
+	bool CanGoToNextLevel = levelScore >= pointsToNextLevel;
+	if (CanGoToNextLevel)
+	{
+		levelScore = 0;
+		currentLevel++;
+		pointsToNextLevel = std::ceil(pointsToNextLevel * NEXT_LEVEL_SCORE_MULTIPLY);
+		boardLogic.ResetBoard();
+	}
+
+	if (pushTimer >= PUSH_TIMER)
+	{
+		if (!boardLogic.TryAddNewColumn())
+		{
+			GameOver();
+		}
+		pushTimer = 0;
+	}
 }
 
 void InGameState::render(RenderWrapperBase* renderer)
@@ -76,17 +96,6 @@ void InGameState::OnMouseLeftClick(int PosX, int PosY)
 {
 	std::cout << "OnMouseLeftClick" << std::endl;
 	boardLogic.TryBreakTileAt(PosX, PosY);
-	score = boardLogic.GetTotalBlocksBroke();
-	levelScore = boardLogic.GetBlocksBroke();
-
-	bool CanGoToNextLevel = levelScore >= pointsToNextLevel;
-	if (CanGoToNextLevel)
-	{
-		levelScore = 0;
-		currentLevel++;
-		pointsToNextLevel = std::ceil(pointsToNextLevel * NEXT_LEVEL_SCORE_MULTIPLY);
-		boardLogic.ResetBoard();
-	}
 
 	for (auto& button : buttons)
 	{
@@ -96,20 +105,7 @@ void InGameState::OnMouseLeftClick(int PosX, int PosY)
 
 void InGameState::PushButtonClicked()
 {
-	pushTimer = 0;
-	if (!boardLogic.TryAddNewColumn()) 
-	{
-		GameOver();
-	}
-}
-
-void InGameState::PushTimer(float deltaTime)
-{
-	pushTimer += deltaTime;
-	if (pushTimer >= PUSH_TIMER)
-	{
-		PushButtonClicked();
-	}
+	pushTimer = PUSH_TIMER;
 }
 
 void InGameState::GameOver()
