@@ -11,7 +11,13 @@ LoseState::LoseState(Game* game, RenderWrapperBase* renderer) : game(game), rend
 	int AGAIN_BUTTON_X = renderer->getWidth() / 2 - AGAIN_BUTTON_WIDTH / 2;
 
 	loseRenderer = std::make_unique<LoseRenderer>(renderer);
-	Button againButton = { AGAIN_BUTTON_X,renderer->getHeight() / 1.5f,AGAIN_BUTTON_WIDTH,renderer->getHeight() / 10,"Again", [&]() { PlayAgain(); } };
+	Button againButton(
+		AGAIN_BUTTON_X,
+		renderer->getHeight() / 1.5f,
+		AGAIN_BUTTON_WIDTH,
+		renderer->getHeight() / 10,
+		"Again", BUTTON_IMAGE, FONT_LOCATION);
+	againButton.setOnClik([&]() { PlayAgain(); } );
 	buttons.push_back(againButton);
 }
 
@@ -27,11 +33,7 @@ void LoseState::OnMouseLeftClick(int PosX, int PosY)
 {
 	for (auto& button : buttons)
 	{
-		if (PosX >= button.x && PosX <= button.x + button.width &&
-			PosY >= button.y && PosY <= button.y + button.height)
-		{
-			button.OnClick();
-		}
+		button.checkCick(PosX, PosY);
 	}
 }
 

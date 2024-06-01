@@ -8,10 +8,12 @@ InGameState::InGameState(Game* game, RenderWrapperBase* renderer)
 	boardLogic = std::make_shared<BoardLogic>(renderer->getWidth(), renderer->getHeight());
 	gameRenderer = std::make_shared<InGameRenderer>(boardLogic, renderer);
 
-	Button pushButton = { renderer->getWidth()/1.1f,
-						renderer->getHeight() - boardLogic->getBoardInitialColumnHeightPos() + renderer->getHeight() /40,
-						renderer->getWidth() / 20,
-						renderer->getHeight() / 20,"<push", [&]() { PushButtonClicked(); } };
+	Button pushButton(renderer->getWidth()/1.1f,
+					renderer->getHeight() - boardLogic->getBoardInitialColumnHeightPos() + renderer->getHeight() /40,
+					renderer->getWidth() / 20,
+					renderer->getHeight() / 20,
+		"<push", BUTTON_IMAGE, FONT_LOCATION);
+	pushButton.setOnClik([&]() { PushButtonClicked(); });
 	buttons.push_back(pushButton);
 }
 
@@ -56,11 +58,7 @@ void InGameState::OnMouseLeftClick(int PosX, int PosY)
 
 	for (auto& button : buttons)
 	{
-		if (PosX >= button.x && PosX <= button.x + button.width &&
-			PosY >= button.y && PosY <= button.y + button.height)
-		{
-			button.OnClick();
-		}
+		button.checkCick(PosX, PosY);
 	}
 }
 

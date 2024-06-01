@@ -20,7 +20,6 @@ void LoseRenderer::render(std::vector<Button> buttons, SaveData saveData)
 
 	for (auto& button : buttons)
 	{
-		renderer->RenderImage(BUTTON_IMAGE, button.x, button.y, button.width, button.height, 1);
-		renderer->RenderText(button.text, FONT_LOCATION, button.width / 4, button.x + button.width / 2, button.y + button.height / 2.5, 1, true);
+		button.draw(renderer);
 	}
 }

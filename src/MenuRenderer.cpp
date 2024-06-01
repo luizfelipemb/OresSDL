@@ -18,7 +18,6 @@ void MenuRenderer::render(std::vector<Button> buttons)
 	renderer->RenderText(MENU_SUBTITLE, FONT_LOCATION, WINDOW_WIDTH / 25, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 5, 1, true, { TEXT_COLOR });
 	for (auto& button : buttons)
 	{
-			renderer->RenderImage(BUTTON_IMAGE, button.x,button.y,button.width,button.height,1);
-			renderer->RenderText(button.text, FONT_LOCATION, button.width/4, button.x + button.width/2, button.y + button.height / 2.5f,1,true);
+		button.draw(renderer);
 	}	
 }
