@@ -3,7 +3,7 @@
 #include <memory>
 #include "RenderWrapperBase.h"
 #include "Game.h"
-#include "LoseRenderer.h"
+#include "Button.h"
 
 class Game;
 
@@ -14,6 +14,7 @@ public:
 	// Inherited via GameStateBase
 	void OnEnter() override;
 	void update(float deltaTime) override;
+	void render(RenderWrapperBase* renderer) override;
 	void OnExit() override;
 	void OnMouseLeftClick(int PosX, int PosY) override;
 	
@@ -21,7 +22,6 @@ private:
 	void PlayAgain();
 	Game* game;
 	RenderWrapperBase* renderer;
-	std::unique_ptr<LoseRenderer> loseRenderer;
 	std::vector<Button> buttons;
 };
 

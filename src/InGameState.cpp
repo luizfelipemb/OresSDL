@@ -3,13 +3,11 @@
 #include "LoseState.h"
 
 InGameState::InGameState(Game* game, RenderWrapperBase* renderer)
+	: boardLogic(renderer->getWidth(), renderer->getHeight())
+	, game(game)
 {
-	this->game = game;
-	boardLogic = std::make_shared<BoardLogic>(renderer->getWidth(), renderer->getHeight());
-	gameRenderer = std::make_shared<InGameRenderer>(boardLogic, renderer);
-
 	Button pushButton(renderer->getWidth()/1.1f,
-					renderer->getHeight() - boardLogic->getBoardInitialColumnHeightPos() + renderer->getHeight() /40,
+					renderer->getHeight() - boardLogic.getBoardInitialColumnHeightPos() + renderer->getHeight() /40,
 					renderer->getWidth() / 20,
 					renderer->getHeight() / 20,
 		"<push", BUTTON_IMAGE, FONT_LOCATION);
@@ -19,8 +17,8 @@ InGameState::InGameState(Game* game, RenderWrapperBase* renderer)
 
 void InGameState::OnEnter()
 {
-	boardLogic->ResetTotalBlocksBroke();
-	boardLogic->ResetBoard();
+	boardLogic.ResetTotalBlocksBroke();
+	boardLogic.ResetBoard();
 	pushTimer = 0;
 	currentLevel = 1;
 	pointsToNextLevel = NEXT_LEVEL_SCORE;
@@ -31,8 +29,41 @@ void InGameState::OnEnter()
 void InGameState::update(float deltaTime)
 {
 	PushTimer(deltaTime);
+}
 
-	gameRenderer->render(buttons,score,levelScore,currentLevel,pointsToNextLevel,pushTimer,PUSH_TIMER);
+void InGameState::render(RenderWrapperBase* renderer)
+{
+	int WINDOW_WIDTH = renderer->getWidth();
+	int WINDOW_HEIGHT = renderer->getHeight();
+	int TILE_SIDE = boardLogic.getTileSide();
+
+	int ABOVE_UI_POS_Y = WINDOW_HEIGHT / 100;
+	int UI_BARS_WIDTH = WINDOW_WIDTH / 10;
+	int UI_BARS_HEIGHT = WINDOW_HEIGHT / 40;
+	int PUSH_UI_POS_X = WINDOW_WIDTH / 1.2f;
+	int SCORE_UI_POS_X = WINDOW_WIDTH / 2;
+
+	renderer->DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR);
+	renderer->RenderImage(ENDLINE_IMAGE, WINDOW_WIDTH - TILE_SIDE * BOARD_MAX_COLUMN_SIZE - WINDOW_WIDTH / 150, WINDOW_HEIGHT / 5, WINDOW_WIDTH / 150, WINDOW_HEIGHT, 1);
+	renderer->RenderText("End Zone", FONT_LOCATION, WINDOW_WIDTH / 40, WINDOW_WIDTH - TILE_SIDE * BOARD_MAX_COLUMN_SIZE, WINDOW_HEIGHT / 8, 1, false, { {255,255,255} });
+
+	boardLogic.draw(renderer);
+
+	renderer->RenderText("Score:" + std::to_string(score), FONT_LOCATION, WINDOW_HEIGHT / 30, UI_BARS_HEIGHT * 1.4f, UI_BARS_HEIGHT * .2f, 1, false, { TEXT_COLOR });
+
+	renderer->RenderText("Level:" + std::to_string(currentLevel), FONT_LOCATION, WINDOW_HEIGHT / 30, SCORE_UI_POS_X - WINDOW_WIDTH / 10, UI_BARS_HEIGHT * .2f, 1, false, { TEXT_COLOR });
+	renderer->DrawRectangle(SCORE_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH, UI_BARS_HEIGHT, DARK_GREEN_COLOR);
+	renderer->DrawRectangle(SCORE_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH * (float)levelScore / pointsToNextLevel, UI_BARS_HEIGHT, GREEN_COLOR);
+
+	renderer->RenderText("Push:", FONT_LOCATION, WINDOW_HEIGHT / 30, PUSH_UI_POS_X - WINDOW_WIDTH / 15, UI_BARS_HEIGHT * .2f, 1, false, { TEXT_COLOR });
+	renderer->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH, UI_BARS_HEIGHT, DARK_RED_COLOR);
+	renderer->DrawRectangle(PUSH_UI_POS_X, ABOVE_UI_POS_Y, UI_BARS_WIDTH * (float)pushTimer / PUSH_TIMER, UI_BARS_HEIGHT, RED_COLOR);
+
+
+	for (auto& button : buttons)
+	{
+		button.draw(renderer);
+	}
 }
 
 void InGameState::OnExit()
@@ -43,9 +74,9 @@ void InGameState::OnExit()
 void InGameState::OnMouseLeftClick(int PosX, int PosY)
 {
 	std::cout << "OnMouseLeftClick" << std::endl;
-	boardLogic->TryBreakTileAt(PosX, PosY);
-	score = boardLogic->GetTotalBlocksBroke();
-	levelScore = boardLogic->GetBlocksBroke();
+	boardLogic.TryBreakTileAt(PosX, PosY);
+	score = boardLogic.GetTotalBlocksBroke();
+	levelScore = boardLogic.GetBlocksBroke();
 
 	bool CanGoToNextLevel = levelScore >= pointsToNextLevel;
 	if (CanGoToNextLevel)
@@ -53,7 +84,7 @@ void InGameState::OnMouseLeftClick(int PosX, int PosY)
 		levelScore = 0;
 		currentLevel++;
 		pointsToNextLevel = std::ceil(pointsToNextLevel * NEXT_LEVEL_SCORE_MULTIPLY);
-		boardLogic->ResetBoard();
+		boardLogic.ResetBoard();
 	}
 
 	for (auto& button : buttons)
@@ -65,7 +96,7 @@ void InGameState::OnMouseLeftClick(int PosX, int PosY)
 void InGameState::PushButtonClicked()
 {
 	pushTimer = 0;
-	if (!boardLogic->TryAddNewColumn()) 
+	if (!boardLogic.TryAddNewColumn()) 
 	{
 		GameOver();
 	}
@@ -76,11 +107,7 @@ void InGameState::PushTimer(float deltaTime)
 	pushTimer += deltaTime;
 	if (pushTimer >= PUSH_TIMER)
 	{
-		if (!boardLogic->TryAddNewColumn())
-		{
-			GameOver();
-		}
-		pushTimer = 0;
+		PushButtonClicked();
 	}
 }
 

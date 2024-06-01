@@ -2,9 +2,9 @@
 #include "GameStateBase.h"
 #include "BoardLogic.h"
 #include <iostream>
-#include "GameRenderer.h"
 #include "Configs.h"
 #include "Game.h"
+#include "Button.h"
 
 class Game;
 
@@ -14,6 +14,7 @@ public:
 	InGameState(Game* game, RenderWrapperBase* renderer);
 	void OnEnter() override;
 	void update(float deltaTime) override;
+	void render(RenderWrapperBase* renderer) override;
 	void OnExit() override;
 	void OnMouseLeftClick(int PosX, int PosY) override;
 private:
@@ -21,8 +22,7 @@ private:
 	void GameOver();
 	void PushTimer(float deltaTime);
 	Game* game;
-	std::shared_ptr<BoardLogic> boardLogic;
-	std::shared_ptr<InGameRenderer> gameRenderer;
+	BoardLogic boardLogic;
 	float pushTimer = 0;
 	int currentLevel = 1;
 	int pointsToNextLevel = NEXT_LEVEL_SCORE;

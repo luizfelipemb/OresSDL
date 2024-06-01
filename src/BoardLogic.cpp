@@ -3,6 +3,8 @@
 #include <iostream>
 #include <random>
 
+#include "RenderWrapperBase.h"
+
 BoardLogic::BoardLogic(int width, int height)
 	: width(width), height(height), tileSide(height / 15), boardInitialColumnHeightPos(height / 10)
 {
@@ -66,6 +68,41 @@ bool BoardLogic::TryAddNewColumn()
 	CreateNewRow();
 
 	return true;
+}
+
+void BoardLogic::draw(RenderWrapperBase* renderer)
+{
+	int TILE_SIDE = getTileSide();
+
+	for (size_t column_index = 0; column_index < GetTiles().size(); ++column_index) {
+		auto& column = GetTiles()[column_index];
+		for (size_t tile_index = 0; tile_index < column.size(); ++tile_index) {
+			auto& tile = column[tile_index];
+			if (tile.GetColor() == Colors::Empty)
+				continue;
+
+			Color color = { 255,255,255 };
+			switch (tile.GetColor()) {
+			case Colors::Blue:
+				color = BLUE_COLOR;
+				break;
+			case Colors::Green:
+				color = GREEN_COLOR;
+				break;
+			case Colors::Red:
+				color = RED_COLOR;
+				break;
+			case Colors::Yellow:
+				color = YELLOW_COLOR;
+				break;
+			default:
+				break;
+			}
+			renderer->RenderImage(TILE_GREY_IMAGE, tile.GetX(), tile.GetY(), TILE_SIDE, TILE_SIDE, 1, color);
+			//render->RenderText(std::to_string(column_index) + "," + std::to_string(tile_index),
+			//FONT_LOCATION, 15, tile.GetX(), tile.GetY(), 1, false, { {255,255,255} });
+		}
+	}
 }
 
 void BoardLogic::TranslateTilesToLeft()

@@ -2,6 +2,8 @@
 #include "BlockTile.h"
 #include <vector>
 
+class RenderWrapperBase;
+
 class BoardLogic
 {
 public:
@@ -16,6 +18,8 @@ public:
 
 	int getBoardInitialColumnHeightPos() const { return boardInitialColumnHeightPos; }
 	int getTileSide() const { return tileSide; }
+
+	void draw(RenderWrapperBase* renderer);
 private:
 	void TranslateTilesToLeft();
 	void CreateNewRow();

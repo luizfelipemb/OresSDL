@@ -1,5 +1,4 @@
 #pragma once
-#include "GameRenderer.h"
 #include "InputHandle.h"
 #include "GameStateBase.h"
 #include "SaveData.h"
@@ -9,6 +8,7 @@
 class InGameState;
 class MenuState;
 class LoseState;
+class RenderWrapperBase;
 
 class Game : public InputObserver
 {
@@ -30,6 +30,8 @@ public:
 	bool isRunning() const { return running; };
 
 	RenderWrapperBase* getRender() const { return renderer; };
+
+	GameStateBase* getCurrentState() const { return currentState.get(); };
 private:
 	void stop() override;
 

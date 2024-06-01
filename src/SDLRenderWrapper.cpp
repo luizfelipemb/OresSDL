@@ -25,7 +25,7 @@ SDLRenderWrapper::SDLRenderWrapper(const char* windowTitle, int windowWidth, int
 		flags
 	);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+	SDL_SetRenderDrawColor(renderer, backgroundColor.red, backgroundColor.green, backgroundColor.blue, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(renderer);
 }
 
@@ -166,6 +166,11 @@ void SDLRenderWrapper::DrawRectangle(int x, int y, float width, float height, Co
 
 	// Draw rectangle
 	SDL_RenderFillRect(renderer, &rect);
+}
+
+void SDLRenderWrapper::setBackGroundColor(Color color)
+{
+	backgroundColor = color;
 }
 
 int SDLRenderWrapper::getWidth() const

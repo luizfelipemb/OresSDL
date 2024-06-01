@@ -21,5 +21,6 @@ public:
 	virtual void DrawRectangle(int x, int y, float width, float height, Color color) = 0;
 	virtual int getWidth() const = 0;
 	virtual int getHeight() const = 0;
+	virtual void setBackGroundColor(Color color) = 0;
 };
 

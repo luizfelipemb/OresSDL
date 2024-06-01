@@ -16,12 +16,14 @@ public:
 	void ClearAllTextures() override;
 	void RenderText(const std::string& text, const std::string& fontFile, int fontSize, int x, int y, double scale = 1, bool centered = 0, std::optional<Color> color = std::nullopt) override;
 	void DrawRectangle(int x, int y, float width, float height, Color color) override;
+	void setBackGroundColor(Color color) override;
 
 	int getWidth() const override;
 	int getHeight() const override;
 private:
 	SDL_Renderer* renderer;
 	SDL_Window* window;
+	Color backgroundColor;
 	std::map<std::string, SDL_Texture*> textureMap;
 };
 

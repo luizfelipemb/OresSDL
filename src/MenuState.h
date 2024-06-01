@@ -2,7 +2,6 @@
 #include "GameStateBase.h"
 #include <memory>
 #include "Game.h"
-#include "MenuRenderer.h"
 #include "Button.h"
 #include <functional>
 
@@ -15,13 +14,13 @@ public:
 
 	void OnEnter() override;
 	void update(float deltaTime) override;
+	void render(RenderWrapperBase* renderer) override;
 	void OnExit() override;
 	void OnMouseLeftClick(int PosX, int PosY) override;
 	void OnPlayButtonClick();
 private:
 	Game* game;
 	RenderWrapperBase* renderer;
-	std::shared_ptr<MenuRenderer> menuRenderer;
 	std::vector<Button> buttons;
 };
 

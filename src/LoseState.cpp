@@ -4,13 +4,11 @@
 
 #define LOSE_TITLE "You Lose"
 
-
 LoseState::LoseState(Game* game, RenderWrapperBase* renderer) : game(game), renderer(renderer)
 {
 	int AGAIN_BUTTON_WIDTH = renderer->getWidth() / 8;
 	int AGAIN_BUTTON_X = renderer->getWidth() / 2 - AGAIN_BUTTON_WIDTH / 2;
 
-	loseRenderer = std::make_unique<LoseRenderer>(renderer);
 	Button againButton(
 		AGAIN_BUTTON_X,
 		renderer->getHeight() / 1.5f,
@@ -27,8 +25,27 @@ void LoseState::OnEnter()
 
 void LoseState::update(float deltaTime)
 {
-	loseRenderer->render(buttons, game->getSaveData());
+
 }
+
+void LoseState::render(RenderWrapperBase* renderer)
+{
+	int WINDOW_WIDTH = renderer->getWidth();
+	int WINDOW_HEIGHT = renderer->getHeight();
+
+	auto saveData = game->getSaveData();
+	renderer->DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, BACKGROUND_COLOR);
+	renderer->RenderText(LOSE_TITLE, FONT_LOCATION, WINDOW_WIDTH / 10, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 10, 1, true, { TEXT_COLOR });
+	renderer->RenderText("Level:" + std::to_string(saveData.level), FONT_LOCATION, WINDOW_WIDTH / 25, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 3, 1, true, { TEXT_COLOR });
+	renderer->RenderText("Score:" + std::to_string(saveData.score), FONT_LOCATION, WINDOW_WIDTH / 25, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2.3, 1, true, { TEXT_COLOR });
+
+
+	for (auto& button : buttons)
+	{
+		button.draw(renderer);
+	}
+}
+
 void LoseState::OnMouseLeftClick(int PosX, int PosY)
 {
 	for (auto& button : buttons)

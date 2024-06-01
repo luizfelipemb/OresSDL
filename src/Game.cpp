@@ -1,6 +1,7 @@
 #include "Game.h"
 
 #include "Configs.h"
+#include "RenderWrapperBase.h"
 
 #include "SDL.h"
 #include <iostream>
@@ -33,7 +34,7 @@ void Game::update()
 
 void Game::render()
 {
-	// Draw current layer
+	currentState->render(renderer);
 	renderer->present();
 }
 
