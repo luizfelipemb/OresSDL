@@ -1,4 +1,6 @@
 #include "SDLRenderWrapper.h"
+
+#include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
@@ -7,7 +9,8 @@
 SDLRenderWrapper::SDLRenderWrapper(const char* windowTitle, int windowWidth, int windowHeight, bool fullscreen)
 {
 	SDL_Init(SDL_INIT_VIDEO);
-	if (TTF_Init() != 0) {
+	if (TTF_Init() != 0)
+	{
 		std::cerr << "Error initializing SDL_ttf: " << TTF_GetError() << std::endl;
 	}
 
@@ -46,7 +49,7 @@ bool SDLRenderWrapper::LoadTexture(std::string fileName)
 
 	SDL_Surface* tempSurf = IMG_Load(fileName.c_str());
 
-	if (tempSurf == 0)
+	if (tempSurf == nullptr)
 	{
 		std::cout << "could not load image named: '" << fileName.c_str() << "'!!!" << std::endl;
 		return false;
@@ -56,7 +59,7 @@ bool SDLRenderWrapper::LoadTexture(std::string fileName)
 
 	SDL_FreeSurface(tempSurf);
 
-	if (texture != 0)
+	if (texture != nullptr)
 	{
 		std::cout << "Texture loaded successfully... ('" << fileName.c_str() << "')" << std::endl;
 		textureMap[fileName] = texture;
@@ -68,7 +71,8 @@ bool SDLRenderWrapper::LoadTexture(std::string fileName)
 	return false;
 }
 
-void SDLRenderWrapper::RenderImage(std::string filename, int x, int y, int w, int h, double scale, std::optional<Color> color)
+void SDLRenderWrapper::RenderImage(std::string filename, int x, int y, int w, int h, double scale,
+                                   std::optional<Color> color)
 {
 	SDL_Rect destRect;
 	destRect.x = x;
@@ -80,14 +84,16 @@ void SDLRenderWrapper::RenderImage(std::string filename, int x, int y, int w, in
 	if (textureMap.find(filename) == textureMap.end())
 		LoadTexture(filename);
 
-	if (color.has_value()) {
+	if (color.has_value())
+	{
 		SDL_SetTextureColorMod(textureMap[filename], color->red, color->green, color->blue);
 	}
 
-	if (SDL_RenderCopyEx(renderer, textureMap[filename], NULL, &destRect, 0, NULL, flip) != 0)
+	if (SDL_RenderCopyEx(renderer, textureMap[filename], nullptr, &destRect, 0, nullptr, flip) != 0)
 		std::cout << SDL_GetError() << std::endl;
 
-	if (color.has_value()) {
+	if (color.has_value())
+	{
 		SDL_SetTextureColorMod(textureMap[filename], 255, 255, 255);
 	}
 }
@@ -102,22 +108,26 @@ void SDLRenderWrapper::ClearAllTextures()
 	textureMap.clear();
 }
 
-void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fontFile, int fontSize, int x, int y, double scale, bool centered, std::optional<Color> color)
+void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fontFile, int fontSize, int x, int y,
+                                  double scale, bool centered, std::optional<Color> color)
 {
 	// Load font
 	TTF_Font* font = TTF_OpenFont(fontFile.c_str(), fontSize);
-	if (!font) {
+	if (!font)
+	{
 		std::cerr << "Error loading font: " << TTF_GetError() << std::endl;
 		return;
 	}
 
 	// Render text
-	SDL_Color textColor = { 0, 0, 0 }; // Default color (black)
-	if (color.has_value()) {
-		textColor = SDL_Color{ color->red, color->green, color->blue };
+	SDL_Color textColor = {0, 0, 0}; // Default color (black)
+	if (color.has_value())
+	{
+		textColor = SDL_Color{color->red, color->green, color->blue};
 	}
 	SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), textColor);
-	if (!surface) {
+	if (!surface)
+	{
 		std::cerr << "Error rendering text: " << TTF_GetError() << std::endl;
 		TTF_CloseFont(font);
 		return;
@@ -125,7 +135,8 @@ void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fo
 
 	// Create texture from surface
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-	if (!texture) {
+	if (!texture)
+	{
 		std::cerr << "Error creating texture from surface: " << SDL_GetError() << std::endl;
 		SDL_FreeSurface(surface);
 		TTF_CloseFont(font);
@@ -137,16 +148,18 @@ void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fo
 	int textHeight = static_cast<int>(surface->h * scale);
 
 	// Adjust position for centered text
-	if (centered) {
+	if (centered)
+	{
 		x -= textWidth / 2;
 		y -= textHeight / 2;
 	}
 
 	// Destination rectangle
-	SDL_Rect destRect = { x, y, textWidth, textHeight };
+	SDL_Rect destRect = {x, y, textWidth, textHeight};
 
 	// Render text
-	if (SDL_RenderCopy(renderer, texture, NULL, &destRect) != 0) {
+	if (SDL_RenderCopy(renderer, texture, nullptr, &destRect) != 0)
+	{
 		std::cerr << "Error rendering text: " << SDL_GetError() << std::endl;
 	}
 
@@ -157,12 +170,13 @@ void SDLRenderWrapper::RenderText(const std::string& text, const std::string& fo
 }
 
 
-void SDLRenderWrapper::DrawRectangle(int x, int y, float width, float height, Color color) {
+void SDLRenderWrapper::DrawRectangle(int x, int y, float width, float height, Color color)
+{
 	// Set render color
 	SDL_SetRenderDrawColor(renderer, color.red, color.green, color.blue, SDL_ALPHA_OPAQUE);
 
 	// Define rectangle
-	SDL_Rect rect = { x, y, width, height };
+	SDL_Rect rect = {x, y, width, height};
 
 	// Draw rectangle
 	SDL_RenderFillRect(renderer, &rect);

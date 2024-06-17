@@ -27,7 +27,8 @@ void BoardLogic::TryBreakTileAt(int PosX, int PosY)
 				bool hasSameColorNeighbor = false;
 				const Colors tileColor = tile.GetColor();
 
-				if (rowIndex + 1 < tiles[columnIndex].size() && tileColor == tiles[columnIndex][rowIndex + 1].GetColor())
+				if (rowIndex + 1 < tiles[columnIndex].size() && tileColor == tiles[columnIndex][rowIndex + 1].
+					GetColor())
 					hasSameColorNeighbor = true;
 				else if (rowIndex > 0 && tileColor == tiles[columnIndex][rowIndex - 1].GetColor())
 					hasSameColorNeighbor = true;
@@ -57,10 +58,11 @@ void BoardLogic::TryBreakTileAt(int PosX, int PosY)
 bool BoardLogic::TryAddNewColumn()
 {
 	//game over
-	if (tiles.size() >=  indexOfFirstColumnWithBlocks + BOARD_MAX_COLUMN_SIZE) {
+	if (tiles.size() >= indexOfFirstColumnWithBlocks + BOARD_MAX_COLUMN_SIZE)
+	{
 		return false;
 	}
-		
+
 	TranslateTilesToLeft();
 	CreateNewRow();
 
@@ -109,11 +111,12 @@ void BoardLogic::ResetBoard()
 
 void BoardLogic::BreakTileAtIndexIfColor(const int columnIndex, const int rowIndex, const Colors color)
 {
-	if (!(columnIndex < tiles.size()) || !(columnIndex >= 0) || !(rowIndex >= 0) || !(rowIndex < tiles[columnIndex].size()))
+	if (!(columnIndex < tiles.size()) || !(columnIndex >= 0) || !(rowIndex >= 0) || !(rowIndex < tiles[columnIndex].
+		size()))
 		return;
 
 	BlockTile& tile = tiles[columnIndex][rowIndex];
-	if (tile.GetColor() == color) 
+	if (tile.GetColor() == color)
 	{
 		tile.SetColor(Colors::Empty);
 		blocksBroke++;
@@ -133,7 +136,8 @@ void BoardLogic::ReorganizeTiles()
 		bool isEntireColumnEmpty = true;
 		for (size_t rowIndex = 0; rowIndex < tiles[columnIndex].size(); ++rowIndex)
 		{
-			if (tiles[columnIndex][rowIndex].GetColor() != Colors::Empty) {
+			if (tiles[columnIndex][rowIndex].GetColor() != Colors::Empty)
+			{
 				isEntireColumnEmpty = false;
 				break;
 			}
@@ -148,7 +152,7 @@ void BoardLogic::ReorganizeTiles()
 				for (size_t rowIndex = 0; rowIndex < tiles[columnIndex].size(); ++rowIndex)
 				{
 					Colors temp = tiles[columnIndex2][rowIndex].GetColor();
-					tiles[columnIndex2][rowIndex].SetColor(tiles[columnIndex2-1][rowIndex].GetColor());
+					tiles[columnIndex2][rowIndex].SetColor(tiles[columnIndex2 - 1][rowIndex].GetColor());
 					tiles[columnIndex2 - 1][rowIndex].SetColor(temp);
 				}
 			}
@@ -171,9 +175,8 @@ void BoardLogic::ReorganizeTiles()
 					foundOne = true;
 				}
 				addToIndex++;
-
-			} while (addToIndex + rowIndex < tiles[columnIndex].size() && !foundOne);
-
+			}
+			while (addToIndex + rowIndex < tiles[columnIndex].size() && !foundOne);
 		}
 	}
 }

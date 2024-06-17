@@ -17,21 +17,21 @@ class Game : public InputObserver
 public:
 	Game();
 	void Update();
-	void SwitchState(std::shared_ptr<GameStateBase> newState);
-	const SaveData GetSaveData() const { return saveData; };
-	const void SetSaveData(SaveData save) { saveData = save; };
+	void SwitchState(std::unique_ptr<GameStateBase>& newState);
+	SaveData GetSaveData() const { return mSaveData; }
+	void SetSaveData(const SaveData save) { mSaveData = save; }
 
-	bool Running = true;
-	std::shared_ptr<InGameState> inGameState;
-	std::shared_ptr<MenuState> menuState;
-	std::shared_ptr<LoseState> loseState;
+	bool running = true;
+	std::unique_ptr<GameStateBase> inGameState;
+	std::unique_ptr<GameStateBase> menuState;
+	std::unique_ptr<GameStateBase> loseState;
 
 private:
 	void OnQuitWindowClick() override;
-	int last_frame_time;
-	SaveData saveData = { 0,0 };
-	std::shared_ptr<GameStateBase> currentState;
-	std::shared_ptr<RenderWrapperBase> render;
-	std::shared_ptr<InputHandler> inputHandle;
-};
 
+	int mLastFrameTime;
+	SaveData mSaveData = {0, 0};
+	std::unique_ptr<GameStateBase> mCurrentState;
+	std::unique_ptr<RenderWrapperBase> mRender;
+	std::unique_ptr<InputHandler> mInputHandle;
+};

@@ -6,4 +6,3 @@ public:
 	int score;
 	int level;
 };
-

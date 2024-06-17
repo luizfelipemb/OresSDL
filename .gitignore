@@ -4,3 +4,4 @@ bin-int
 *.sln
 *.vcxproj
 *.user
+.idea

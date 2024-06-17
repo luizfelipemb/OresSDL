@@ -13,10 +13,11 @@ public:
 	const int GetTotalBlocksBroke() const { return totalBlocksBroke; };
 	const void ResetTotalBlocksBroke() { totalBlocksBroke = 0; };
 	void ResetBoard();
+
 private:
 	void TranslateTilesToLeft();
 	void CreateNewRow();
-	void BreakTileAtIndexIfColor(const int columnIndex, const int rowIndex, const Colors color);
+	void BreakTileAtIndexIfColor(int columnIndex, int rowIndex, Colors color);
 	void ReorganizeTiles();
 	Colors GetRandomColor();
 	std::vector<std::vector<BlockTile>> tiles;

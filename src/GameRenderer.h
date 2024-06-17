@@ -7,11 +7,12 @@
 class InGameRenderer
 {
 public:
-	InGameRenderer(std::shared_ptr<BoardLogic> boardLogic, std::shared_ptr<RenderWrapperBase> render);
-	void UpdateRender(std::vector<Button> buttons, int score, int levelScore, int level, int pointsToNextLevel,float pushTimer,float maxPushTimer);
-	std::shared_ptr<RenderWrapperBase> render;
+	InGameRenderer(std::unique_ptr<BoardLogic>& boardLogic, std::unique_ptr<RenderWrapperBase>& render);
+	void UpdateRender(std::vector<Button> buttons, int score, int levelScore, int level, int pointsToNextLevel,
+	                  float pushTimer, float maxPushTimer);
+	std::unique_ptr<RenderWrapperBase>& render;
+
 private:
 	void RenderBoardTiles();
-	std::shared_ptr<BoardLogic> boardLogic;
+	std::unique_ptr<BoardLogic>& mBoardLogic;
 };
-

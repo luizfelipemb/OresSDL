@@ -2,6 +2,13 @@
 class InputObserver
 {
 public:
-	virtual void OnMouseLeftClick(int PosX, int PosY) {};
-	virtual void OnQuitWindowClick() {};
+	virtual ~InputObserver() = default;
+
+	virtual void OnMouseLeftClick(int PosX, int PosY)
+	{
+	};
+
+	virtual void OnQuitWindowClick()
+	{
+	};
 };

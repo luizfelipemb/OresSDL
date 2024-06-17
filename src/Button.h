@@ -12,4 +12,3 @@ public:
 	std::string text;
 	std::function<void()> OnClick;
 };
-

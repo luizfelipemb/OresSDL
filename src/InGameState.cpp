@@ -1,15 +1,17 @@
 #include "InGameState.h"
 
-InGameState::InGameState(Game* game, std::shared_ptr<RenderWrapperBase> render)
+InGameState::InGameState(Game* game, std::unique_ptr<RenderWrapperBase>& render)
 {
 	this->game = game;
-	boardLogic = std::make_shared<BoardLogic>();
-	gameRenderer = std::make_shared<InGameRenderer>(boardLogic, render);
+	boardLogic = std::make_unique<BoardLogic>();
+	gameRenderer = std::make_unique<InGameRenderer>(boardLogic, render);
 
-	Button pushButton = { WINDOW_WIDTH/1.1f, 
-						WINDOW_HEIGHT - BOARD_INITIALCOLUMN_HEIGHT_POS + WINDOW_HEIGHT/40,
-						WINDOW_WIDTH / 20,
-						WINDOW_HEIGHT / 20,"<push", [&]() { PushButtonClicked(); } };
+	Button pushButton = {
+		WINDOW_WIDTH / 1.1f,
+		WINDOW_HEIGHT - BOARD_INITIALCOLUMN_HEIGHT_POS + WINDOW_HEIGHT / 40,
+		WINDOW_WIDTH / 20,
+		WINDOW_HEIGHT / 20, "<push", [&]() { PushButtonClicked(); }
+	};
 	buttons.push_back(pushButton);
 }
 
@@ -28,12 +30,11 @@ void InGameState::Update(float deltaTime)
 {
 	PushTimer(deltaTime);
 
-	gameRenderer->UpdateRender(buttons,score,levelScore,currentLevel,pointsToNextLevel,pushTimer,PUSH_TIMER);
+	gameRenderer->UpdateRender(buttons, score, levelScore, currentLevel, pointsToNextLevel, pushTimer,PUSH_TIMER);
 }
 
 void InGameState::OnExit()
 {
-
 }
 
 void InGameState::OnMouseLeftClick(int PosX, int PosY)
@@ -65,7 +66,7 @@ void InGameState::OnMouseLeftClick(int PosX, int PosY)
 void InGameState::PushButtonClicked()
 {
 	pushTimer = 0;
-	if (!boardLogic->TryAddNewColumn()) 
+	if (!boardLogic->TryAddNewColumn())
 	{
 		GameOver();
 	}
@@ -86,6 +87,6 @@ void InGameState::PushTimer(float deltaTime)
 
 void InGameState::GameOver()
 {
-	game->SetSaveData({ score,currentLevel });
+	game->SetSaveData({score, currentLevel});
 	game->SwitchState(game->loseState);
 }

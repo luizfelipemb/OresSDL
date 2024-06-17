@@ -8,9 +8,9 @@
 class LoseRenderer
 {
 public:
-	LoseRenderer(std::shared_ptr<RenderWrapperBase> render);
+	LoseRenderer(std::unique_ptr<RenderWrapperBase>& render);
 	void UpdateRender(std::vector<Button> buttons, SaveData saveData);
-private:
-	std::shared_ptr<RenderWrapperBase> render;
-};
 
+private:
+	std::unique_ptr<RenderWrapperBase>& render;
+};

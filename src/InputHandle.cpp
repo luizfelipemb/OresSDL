@@ -18,12 +18,14 @@ void InputHandler::HandleEvents()
 
 		break;
 	case SDL_MOUSEBUTTONUP:
-		if (event.button.button == SDL_BUTTON_LEFT) {
+		if (event.button.button == SDL_BUTTON_LEFT)
+		{
 			int mouseX = event.button.x;
 			int mouseY = event.button.y;
 			std::cout << "Mouse Button Down with x:" << mouseX << " y:" << mouseY << std::endl;
 
-			for (InputObserver* observer : observers) {
+			for (InputObserver* observer : observers)
+			{
 				observer->OnMouseLeftClick(mouseX, mouseY);
 			}
 		}

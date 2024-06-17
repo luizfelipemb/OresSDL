@@ -5,44 +5,43 @@
 #include "SDLRenderWrapper.h"
 
 Game::Game()
+	:	inGameState(std::make_unique<InGameState>(this, mRender)),
+		menuState(std::make_unique<MenuState>(this, mRender)),
+		loseState(std::make_unique<LoseState>(this, mRender))
+		
 {
-	last_frame_time = 0;
-	render = std::make_shared<SDLRenderWrapper>(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_FULLSCREEN);
-	inputHandle = std::make_shared<InputHandler>();
-
-	inGameState = std::make_shared<InGameState>(std::move(this), render);
-	menuState = std::make_shared<MenuState>(std::move(this), render);
-	loseState = std::make_shared<LoseState>(std::move(this), render);
-
-	inputHandle->RegisterObserver(this);
-	SwitchState(menuState);
+	mLastFrameTime = 0;
+	mRender = std::make_unique<SDLRenderWrapper>(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_FULLSCREEN);
+	mInputHandle = std::make_unique<InputHandler>();
+	mInputHandle->RegisterObserver(this);
+	SwitchState(inGameState);
 }
 
 void Game::Update()
 {
 	// Calculate delta time
 	Uint32 currentTicks = SDL_GetTicks();
-	float deltaTime = (currentTicks - last_frame_time) / 1000.0f; // Convert milliseconds to seconds
-	last_frame_time = currentTicks;
+	float deltaTime = (currentTicks - mLastFrameTime) / 1000.0f; // Convert milliseconds to seconds
+	mLastFrameTime = currentTicks;
 
-	inputHandle->HandleEvents();
-	currentState->Update(deltaTime);
-	render->UpdateRender();
-	
-	while (!SDL_TICKS_PASSED(SDL_GetTicks(), last_frame_time + FRAME_TARGET_TIME));
+	mInputHandle->HandleEvents();
+	mCurrentState->Update(deltaTime);
+	mRender->UpdateRender();
+
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), mLastFrameTime + FRAME_TARGET_TIME));
 }
 
 void Game::OnQuitWindowClick()
 {
-	Running = false;
+	running = false;
 }
 
-void Game::SwitchState(std::shared_ptr<GameStateBase> newState)
+void Game::SwitchState(std::unique_ptr<GameStateBase>& newState)
 {
-	inputHandle->RemoveObserver(currentState.get());
-	if(currentState)
-		currentState->OnExit();
-	inputHandle->RegisterObserver(newState.get());
-	currentState = newState;
-	currentState->OnEnter();
+	mInputHandle->RemoveObserver(mCurrentState.get());
+	if (mCurrentState)
+		mCurrentState->OnExit();
+	mInputHandle->RegisterObserver(newState.get());
+	mCurrentState = std::move(newState);
+	mCurrentState->OnEnter();
 }

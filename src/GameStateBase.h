@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+
 #include "InputObserver.h"
 
 class GameStateBase : public InputObserver
@@ -8,4 +10,3 @@ public:
 	virtual void Update(float deltaTime) = 0;
 	virtual void OnExit() = 0;
 };
-

@@ -14,16 +14,16 @@ class BlockTile
 {
 public:
 	BlockTile(int x, int y, float sideLenght, Colors color);
-	const int GetX() const { return x; };
-	const int GetY() const { return y; };
-	const float GetSideLength() const { return sideLength; };
-	const Colors GetColor() const { return myColor; };
-	const void SetColor(Colors color) { myColor = color; };
-	const void TranslateX(int addToX) { x += addToX; };
+	const int GetX() const { return x; }
+	const int GetY() const { return y; }
+	const float GetSideLength() const { return sideLength; }
+	const Colors GetColor() const { return myColor; }
+	const void SetColor(const Colors color) { myColor = color; }
+	const void TranslateX(const int addToX) { x += addToX; }
+
 private:
 	int x;
 	int y;
 	float sideLength;
 	Colors myColor;
 };
-
