@@ -14,7 +14,7 @@ class Game : public InputObserver
 public:
 	Game();
 	void Update();
-	void SwitchState(std::unique_ptr<GameStateBase>& newState);
+	void SwitchState(std::shared_ptr<GameStateBase>& newState);
 	SaveData GetSaveData() const { return mSaveData; }
 	void SetSaveData(const SaveData save) { mSaveData = save; }
 private:
@@ -22,14 +22,14 @@ private:
 
 public:
 	bool running = true;
-	std::unique_ptr<GameStateBase> inGameState;
-	std::unique_ptr<GameStateBase> menuState;
-	std::unique_ptr<GameStateBase> loseState;
+	std::shared_ptr<GameStateBase> inGameState;
+	std::shared_ptr<GameStateBase> menuState;
+	std::shared_ptr<GameStateBase> loseState;
 
 private:
 	int mLastFrameTime;
-	SaveData mSaveData = {0, 0};
-	std::unique_ptr<GameStateBase> mCurrentState;
+	SaveData mSaveData;
+	std::shared_ptr<GameStateBase>& mCurrentState;
 	std::unique_ptr<RenderWrapperBase> mRender;
 	std::unique_ptr<InputHandler> mInputHandle;
 };

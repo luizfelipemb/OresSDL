@@ -6,16 +6,15 @@
 #include "SDLRenderWrapper.h"
 
 Game::Game()
-	:	inGameState(std::make_unique<InGameState>(this, mRender)),
-		menuState(std::make_unique<MenuState>(this, mRender)),
-		loseState(std::make_unique<LoseState>(this, mRender))
-		
+	:	inGameState(std::make_shared<InGameState>(this, mRender)),
+		menuState(std::make_shared<MenuState>(this, mRender)),
+		loseState(std::make_shared<LoseState>(this, mRender)),
+		mCurrentState(menuState),
+		mRender(std::make_unique<SDLRenderWrapper>(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_FULLSCREEN)),
+		mInputHandle(std::make_unique<InputHandler>())
 {
-	mLastFrameTime = 0;
-	mRender = std::make_unique<SDLRenderWrapper>(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_FULLSCREEN);
-	mInputHandle = std::make_unique<InputHandler>();
 	mInputHandle->RegisterObserver(this);
-	SwitchState(inGameState);
+	SwitchState(menuState);
 }
 
 void Game::Update()
@@ -37,12 +36,12 @@ void Game::OnQuitWindowClick()
 	running = false;
 }
 
-void Game::SwitchState(std::unique_ptr<GameStateBase>& newState)
+void Game::SwitchState(std::shared_ptr<GameStateBase>& newState)
 {
 	mInputHandle->RemoveObserver(mCurrentState.get());
 	if (mCurrentState)
 		mCurrentState->OnExit();
-	mInputHandle->RegisterObserver(newState.get());
-	mCurrentState = std::move(newState);
+	mCurrentState = newState;
+	mInputHandle->RegisterObserver(mCurrentState.get());
 	mCurrentState->OnEnter();
 }
