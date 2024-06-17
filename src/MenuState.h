@@ -4,7 +4,6 @@
 #include "Game.h"
 #include "MenuRenderer.h"
 #include "Button.h"
-#include <functional>
 
 class Game;
 
