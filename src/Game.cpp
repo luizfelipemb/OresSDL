@@ -1,7 +1,8 @@
 #include "Game.h"
 #include "Configs.h"
+#include "InGameState.h"
+#include "MenuState.h"
 #include "SDL.h"
-#include <iostream>
 #include "SDLRenderWrapper.h"
 
 Game::Game()

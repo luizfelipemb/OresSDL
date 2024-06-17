@@ -1,4 +1,5 @@
 #include "LoseState.h"
+#include "Configs.h"
 
 #define LOSE_TITLE "You Lose"
 #define AGAIN_BUTTON_WIDTH WINDOW_WIDTH/8

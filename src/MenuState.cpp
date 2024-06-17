@@ -1,4 +1,5 @@
 #include "MenuState.h"
+#include "Configs.h"
 
 #define PLAY_BUTTON_WIDTH WINDOW_WIDTH/8
 #define PLAY_BUTTON_X WINDOW_WIDTH/2 - PLAY_BUTTON_WIDTH/2
