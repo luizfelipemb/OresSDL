@@ -13,4 +13,6 @@ public:
 
 private:
 	std::unique_ptr<RenderWrapperBase>& render;
+
+	const char* LOSE_TITLE = "You Lose";
 };

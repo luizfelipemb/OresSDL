@@ -38,3 +38,17 @@ void InputHandler::HandleEvents()
 		break;
 	}
 }
+
+void InputHandler::RegisterObserver(InputObserver* observer)
+{
+	observers.push_back(observer);
+}
+
+void InputHandler::RemoveObserver(const InputObserver* observer)
+{
+	auto it = std::find(observers.begin(), observers.end(), observer);
+	if (it != observers.end())
+	{
+		observers.erase(it);
+	}
+}

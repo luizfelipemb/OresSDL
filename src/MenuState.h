@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "MenuRenderer.h"
 #include "Button.h"
+#include "Configs.h"
 
 class Game;
 
@@ -23,4 +24,7 @@ private:
 	std::unique_ptr<RenderWrapperBase>& render;
 	std::unique_ptr<MenuRenderer> menuRenderer;
 	std::vector<Button> buttons;
+
+	const int PLAY_BUTTON_WIDTH = WINDOW_WIDTH / 8;
+	const int PLAY_BUTTON_X = WINDOW_WIDTH / 2 - PLAY_BUTTON_WIDTH / 2;
 };

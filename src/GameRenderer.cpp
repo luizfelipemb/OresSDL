@@ -2,12 +2,6 @@
 #include "SDLRenderWrapper.h"
 #include "Configs.h"
 
-#define ABOVE_UI_POS_Y WINDOW_HEIGHT / 100
-#define UI_BARS_WIDTH WINDOW_WIDTH / 10
-#define UI_BARS_HEIGHT WINDOW_HEIGHT / 40
-#define PUSH_UI_POS_X WINDOW_WIDTH / 1.2f
-#define SCORE_UI_POS_X WINDOW_WIDTH / 2
-
 InGameRenderer::InGameRenderer(std::unique_ptr<BoardLogic>& boardLogic, std::unique_ptr<RenderWrapperBase>& render)
 	:render(render), mBoardLogic(boardLogic)
 {

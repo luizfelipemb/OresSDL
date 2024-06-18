@@ -1,8 +1,6 @@
 #include "LoseRenderer.h"
 #include "Configs.h"
 
-#define LOSE_TITLE "You Lose"
-
 LoseRenderer::LoseRenderer(std::unique_ptr<RenderWrapperBase>& render) : render(render)
 {
 }
